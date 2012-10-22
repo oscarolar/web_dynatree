@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <!-- GR just to keep track of an example. This is taken from pos_small_shop
+	and not plugged into web_dynatree at all -->
+
+    <data>
+        <record id="view_product_product_search" model="ir.ui.view">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="type">search</field>
+            <field name="priority" eval="16"/>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="replace">
+                    <field name="pos_categ_id" widget="dynatree_selection"
+                           operator="child_of"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
