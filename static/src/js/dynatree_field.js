@@ -31,9 +31,15 @@ openerp.web_dynatree = function (openerp) {
                     field.dynatree_selected = node.data.oerp_id;
                 },
                 persist: false, // TODO load via request and lazyload
-                children: [ // Pass an array of nodes.
-                    {title: "Categories", isFolder: true,
-                     isLazy: true, oerp_id: 2},
+                initAjax: function(node) {
+                    field.rpc('/poc/roots').then(
+                        function(result) {
+                            node.addChild(result);
+                        };
+                    }
+//                children: [ // Pass an array of nodes.
+//                    {title: "Categories", isFolder: true,
+//                     isLazy: true, oerp_id: 2},
                 ]
             });
 
