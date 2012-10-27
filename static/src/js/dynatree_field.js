@@ -23,7 +23,6 @@ openerp.web_dynatree = function (openerp) {
                         }
                     );
                 },
-
                 onActivate: function(node) {
                     // A DynaTreeNode object is passed to the activation handler
                     // Note: we also get this event, if persistence is on, and the page is reloaded.
@@ -31,17 +30,21 @@ openerp.web_dynatree = function (openerp) {
                     field.dynatree_selected = node.data.oerp_id;
                 },
                 persist: false, // TODO load via request and lazyload
-                initAjax: function(node) {
-                    field.rpc('/poc/roots').then(
-                        function(result) {
-                            node.addChild(result);
-                        };
-                    }
-//                children: [ // Pass an array of nodes.
-//                    {title: "Categories", isFolder: true,
-//                     isLazy: true, oerp_id: 2},
-                ]
+                children: [{title: "Categories", oerp_id: null,
+                            isFolder : true, isLazy: true}]
             });
+
+            /* GR keeping attempt at AJAX init loading, which seems to fail
+               because some object is not ready yet.
+
+               field.rpc('/poc/roots', {}).then(
+                 function(result) {
+                    var rootNode = $("#dynatree").dynatree("getRoot");
+                    for (i=0; i<result.length; i++) {
+                        rootNode.addChild(result[i]);
+                    }
+                }
+            ); */
 
             this._super();
         },
