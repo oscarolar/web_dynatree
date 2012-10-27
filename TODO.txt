@@ -1,0 +1,15 @@
+Acknowledged room for improvements
+----------------------------------
+
+- allow several dynatree fields in one page (stop hardcoding dynatreee
+   div id for that in render(), base it on some field id).
+
+- general styling
+
+- make display properties somewhat configurable : with/without icons
+
+- introduce options for the bootsrap of the tree structure
+  (with/without a mother category etc)
+
+- dynatree form fields !
+
