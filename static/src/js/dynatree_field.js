@@ -6,17 +6,15 @@
 openerp.web_dynatree = function (openerp) {
     openerp.web.search.DynatreeSelectionField = openerp.web.search.Field.extend({
         render: function(defaults) {
-	    console.info('GR render', defaults)
-            return '<div id="dynatree"> DYNATREE</div>'; // TODO use name in id
+            return '<div id="dynatree"></div>'; // TODO use name in id
         },
 
         start: function() {
-            console.info('GR start', this);
             this.dynatree_selected = null;
             field = this;
             $("#dynatree").dynatree({
                 onLazyRead: function(node) {
-                    field.rpc('/poc/expand',
+                    field.rpc('/web/dynatree/expand',
                               {'node_id': node.data.oerp_id}).then(
                                   function(result) {
                                       node.setLazyNodeStatus(DTNodeStatus_Ok);
@@ -38,7 +36,7 @@ openerp.web_dynatree = function (openerp) {
             /* GR keeping attempt at AJAX init loading, which seems to fail
                because some object is not ready yet.
 
-               field.rpc('/poc/roots', {}).then(
+               field.rpc('/web/dynatree/roots', {}).then(
                  function(result) {
                     var rootNode = $("#dynatree").dynatree("getRoot");
                     for (i=0; i<result.length; i++) {
@@ -51,7 +49,7 @@ openerp.web_dynatree = function (openerp) {
         },
 
         get_value: function() {
-            console.debug('GR dynatree get_value:', this.dynatree_selected);
+            console.debug('Dynatree get_value: ', this.dynatree_selected);
             return this.dynatree_selected;
         },
 

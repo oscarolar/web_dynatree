@@ -5,7 +5,7 @@ except ImportError:
 
 class PocController(openerpweb.Controller):
 
-    _cp_path = '/poc'
+    _cp_path = '/web/dynatree'
 
     @openerpweb.httprequest
     def hello(self, request):
