@@ -6,7 +6,7 @@
 openerp.web_dynatree = function (openerp) {
     openerp.web.search.DynatreeSelectionField = openerp.web.search.Field.extend({
         render: function(defaults) {
-            return '<div id="dynatree"></div>'; // TODO use name in id
+            return '<div id="dynatree" style="position:absolute; z-index: 100;"></div>'; // TODO use name in id
         },
 
         start: function() {
