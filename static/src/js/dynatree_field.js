@@ -14,7 +14,17 @@ openerp.web_dynatree = function (openerp) {
             console.info('GR start', this);
             this.dynatree_selected = null;
             field = this;
+           var whoami = this.rpc('/poc/whoami', {}).then(function(result) {field.whoami = result});
             $("#dynatree").dynatree({
+                onLazyRead: function(node) {
+                    field.rpc('/poc/expand', {'node_id': node.data.oerp_id}).then(
+                        function(result) {
+                            node.setLazyNodeStatus(DTNodeStatus_Ok);
+                            node.addChild(result);
+                        }
+                    );
+                },
+
                 onActivate: function(node) {
                     // A DynaTreeNode object is passed to the activation handler
                     // Note: we also get this event, if persistence is on, and the page is reloaded.
@@ -23,14 +33,8 @@ openerp.web_dynatree = function (openerp) {
                 },
                 persist: false, // TODO load via request and lazyload
                 children: [ // Pass an array of nodes.
-                    {oerp_id: 1, title: "Item 1"},
-                    {title: "Folder 2", isFolder: true,
-                     children: [
-                         {title: "Sub-item 2.1", oerp_id: 14},
-                         {title: "Sub-item 2.2", oerp_id: 8}
-                     ]
-                    },
-                    {title: "Item 3", oerp_id: 7}
+                    {title: "Categories", isFolder: true,
+                     isLazy: true, oerp_id: 2},
                 ]
             });
 

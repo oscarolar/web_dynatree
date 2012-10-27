@@ -20,4 +20,20 @@ class PocController(openerpweb.Controller):
         # but there are shortcuts in json_rpc calls (see core.js)
         # that *probably* make this more or less automatic
         session = request.session
-        return session.model('res.users').read([session._uid])['name']
+        return session.model('res.users').read([session._uid])[0]['name']
+
+
+    @openerpweb.jsonrequest
+    def expand(self, request, node_id=1):
+        model = request.session.model('pos.category')
+        child_ids = model.read([node_id])[0]['child_id']
+        if not child_ids:
+            return []
+
+        children = model.read(child_ids)
+        return [ dict(title=child['name'],
+                      oerp_id=child['id'],
+                      isFolder=bool(child['child_id']),
+                      isLazy=bool(child['child_id']),
+                      )
+                 for child in children]
