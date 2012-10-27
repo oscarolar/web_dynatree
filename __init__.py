@@ -23,12 +23,16 @@ class PocController(openerpweb.Controller):
 
 
     @openerpweb.jsonrequest
-    def expand(self, request, node_id=None):
+    def expand(self, request, model=None, node_id=None):
         """Return the list of direct children of the current node.
 
-        If node_id is None, the records that have no parents are returned."""
+        If node_id is None, the records that have no parents are returned.
+        model is a kw argument for the sake of expliciteness, but it's required.
+        """
 
-        model = request.session.model('pos.category')
+        if model is None:
+            raise RuntimeError("Model must be specified")
+        model = request.session.model(model)
 
         if node_id is None:
             child_ids = model.search([('parent_id', '=', False)])
