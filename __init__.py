@@ -35,22 +35,23 @@ class PocController(openerpweb.Controller):
         else:
             child_ids = model.read([node_id])[0]['child_id']
 
-        return self.nodes_as_json(model, child_ids)
+        return self.dynatree_nodes(model, child_ids)
 
-    def nodes_as_json(self, model, ids):
-        """Return Dynatree JSON representation from an id list.
-
-        TODO: stop hardcoding at least 'child_id' and 'name' fields.
+    def dynatree_nodes(self, model, ids, title_field='name',
+                      child_field='child_id'):
+        """Return Dynatree nodes representation from a list of ids.
         """
 
         if not ids:
             return []
 
-        record = model.read(ids)
-        return [ dict(title=child['name'],
-                      oerp_id=child['id'],
-                      isFolder=bool(child['child_id']),
-                      isLazy=bool(child['child_id']),
-                      )
-                 for child in record]
+        records = model.read(ids, (title_field, child_field))
+        has_children = lambda record: bool(record[child_field])
+
+        return [dict(title=record[title_field],
+                     oerp_id=record['id'],
+                     isFolder=has_children(record),
+                     isLazy=has_children(record),
+                     )
+                for record in records]
 
