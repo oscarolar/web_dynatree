@@ -16,20 +16,21 @@ openerp.web_dynatree = function (openerp) {
             field = this;
             $("#dynatree").dynatree({
                 onLazyRead: function(node) {
-                    field.rpc('/poc/expand', {'node_id': node.data.oerp_id}).then(
-                        function(result) {
-                            node.setLazyNodeStatus(DTNodeStatus_Ok);
-                            node.addChild(result);
-                        }
-                    );
+                    field.rpc('/poc/expand',
+                              {'node_id': node.data.oerp_id}).then(
+                                  function(result) {
+                                      node.setLazyNodeStatus(DTNodeStatus_Ok);
+                                      node.addChild(result);
+                                  }
+                              );
                 },
                 onActivate: function(node) {
                     // A DynaTreeNode object is passed to the activation handler
-                    // Note: we also get this event, if persistence is on, and the page is reloaded.
-                    alert("You activated " + node.data.title);
+                    // Note: we also get this event, if persistence is on,
+                    // and the page is reloaded.
                     field.dynatree_selected = node.data.oerp_id;
                 },
-                persist: false, // TODO load via request and lazyload
+                persist: false,
                 children: [{title: "Categories", oerp_id: null,
                             isFolder : true, isLazy: true}]
             });
