@@ -14,7 +14,6 @@ openerp.web_dynatree = function (openerp) {
             console.info('GR start', this);
             this.dynatree_selected = null;
             field = this;
-           var whoami = this.rpc('/poc/whoami', {}).then(function(result) {field.whoami = result});
             $("#dynatree").dynatree({
                 onLazyRead: function(node) {
                     field.rpc('/poc/expand', {'node_id': node.data.oerp_id}).then(
