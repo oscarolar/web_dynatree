@@ -2,7 +2,7 @@ Integration of jquery.dynatree into OpenERP web
 ===============================================
 
 This addon defines a new search field based on `jquery.dynatree
-<http://wwwendt.de/tech/dynatree/index.html>_` for arborescent
+<http://wwwendt.de/tech/dynatree/index.html>`_ for arborescent
 structures such as product and partner categories.
 
 To use it, simply add ``widget="dynatree_selection"`` in the wished
