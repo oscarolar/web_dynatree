@@ -10,8 +10,8 @@
         <t t-esc="attrs.string || attrs.name"/>
         <span t-if="attrs.help">?</span>
     </label>
-    <div id="dynatree-summary" style="width:20em; height: 2.5ex; border: 1px solid blac; background-color: white; border-radius:5px;">
-      <button id="dropdown-dynatree" style="border: none; background-color:white;">
+    <div id="dynatree-summary" class="oe_dynatree_summary">
+      <button id="dropdown-dynatree" class="oe_dynatree_button_toggle">
         <img
            width="16" height="16"
            t-att-src='_s + "/web/static/src/img/iconset-d-drop.gif"'/>
@@ -19,7 +19,6 @@
       </button>
       <span>Sélectionner ci-dessous</span>
     </div>
-    <div id="dynatree"
-         style="position:absolute; z-index: 100;"></div>
+    <div id="dynatree" class="oe_dynatree"></div>
   </t>
 </templates>

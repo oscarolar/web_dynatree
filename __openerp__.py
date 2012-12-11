@@ -13,6 +13,7 @@
            "static/src/js/*.js",
            ],
     "css": ["static/lib/css/*.css",
+            "static/src/css/*.css",
             ],
     'qweb': ["static/src/xml/*.xml",
              ],
