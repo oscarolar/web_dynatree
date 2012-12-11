@@ -5,6 +5,16 @@ div.oe_dynatree {
   border-top: none;
 }
 
+div.oe_dynatree .dynatree-icon {
+    background: none;
+    margin: 0;
+    width: 0;
+}
+
+div.oe_dynatree a {
+    padding-left: 0;
+}
+
 .oe_dynatree_summary {
   width: 20em;
   height: 2.5ex;
