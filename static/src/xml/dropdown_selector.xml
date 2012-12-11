@@ -11,14 +11,8 @@
         <span t-if="attrs.help">?</span>
     </label>
     <div id="dynatree-summary" class="oe_dynatree_summary">
-      <button id="dropdown-dynatree" class="oe_dynatree_button_toggle">
-        <img
-           width="16" height="16"
-           t-att-src='_s + "/web/static/src/img/iconset-d-drop.gif"'/>
-        <div style="clear:both" />
-      </button>
       <span>Sélectionner ci-dessous</span>
     </div>
-    <div id="dynatree" class="oe_dynatree"></div>
+    <div id="dynatree" class="oe_dynatree" style="position:absolute"></div>
   </t>
 </templates>

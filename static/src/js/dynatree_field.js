@@ -26,7 +26,7 @@ openerp.web_dynatree = function (openerp) {
                     // Note: we also get this event, if persistence is on,
                     // and the page is reloaded.
                     field.dynatree_selected = node.data.oerp_id;
-                    $('#dynatree-summary span')[0].textContent = node.data.title;
+                    $('#dynatree-summary')[0].textContent = node.data.title;
                     field.view.do_search();
                 },
                 persist: false,
