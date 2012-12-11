@@ -5,9 +5,7 @@
 // GR: mandatory to use exactly the same name as the module's
 openerp.web_dynatree = function (openerp) {
     openerp.web.search.DynatreeSelectionField = openerp.web.search.Field.extend({
-        render: function(defaults) {
-            return '<div id="dynatree" style="position:absolute; z-index: 100;"></div>'; // TODO use name in id
-        },
+        template: "SearchDynatreeSelectionField",
 
         start: function() {
             this.dynatree_selected = null;
@@ -28,6 +26,7 @@ openerp.web_dynatree = function (openerp) {
                     // Note: we also get this event, if persistence is on,
                     // and the page is reloaded.
                     field.dynatree_selected = node.data.oerp_id;
+                    $('#dynatree-summary span')[0].textContent = node.data.title;
                     field.view.do_search();
                 },
                 persist: false,
@@ -47,6 +46,11 @@ openerp.web_dynatree = function (openerp) {
                 }
             ); */
 
+            $('#dropdown-dynatree').click(function() {
+                field.toggle_dynatree();
+            });
+
+            this.dynatree_displayed = true;
             this._super();
         },
 
@@ -58,6 +62,12 @@ openerp.web_dynatree = function (openerp) {
         // GR no need to override get_domain() or make_domain()
         // the <field> attrs can include 'operator', 'name' etc that
         // the generic version froms search.js will take care of
+
+        toggle_dynatree: function() {
+            this.dynatree_displayed = !(this.dynatree_displayed);
+            $('#dynatree').css("display",
+                               this.dynatree_displayed ? "block" : "none");
+        }
 
     });
 

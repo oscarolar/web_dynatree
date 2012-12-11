@@ -14,6 +14,8 @@
            ],
     "css": ["static/lib/css/*.css",
             ],
+    'qweb': ["static/src/xml/*.xml",
+             ],
     'auto_install': True,
     'web_preload': True,
 }

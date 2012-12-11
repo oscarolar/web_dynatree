@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vim:fdl=1:
+-->
+<templates id="template" xml:space="preserve">
+  <t t-name="SearchDynatreeSelectionField">
+    <label t-att-title="attrs.help"
+           t-att-class="'oe_label' + (attrs.help ? '_help' : '')"
+           for="dynatree"
+           t-att-style="style">
+        <t t-esc="attrs.string || attrs.name"/>
+        <span t-if="attrs.help">?</span>
+    </label>
+    <div id="dynatree-summary" style="width:20em; height: 2.5ex; border: 1px solid blac; background-color: white; border-radius:5px;">
+      <button id="dropdown-dynatree" style="border: none; background-color:white;">
+        <img
+           width="16" height="16"
+           t-att-src='_s + "/web/static/src/img/iconset-d-drop.gif"'/>
+        <div style="clear:both" />
+      </button>
+      <span>Sélectionner ci-dessous</span>
+    </div>
+    <div id="dynatree"
+         style="position:absolute; z-index: 100;"></div>
+  </t>
+</templates>
