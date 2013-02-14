@@ -10,11 +10,18 @@ openerp.web_dynatree = function (openerp) {
         start: function() {
             this.dynatree_selected = null;
             field = this;
+            child_field = null;
+            if (field.attrs.hasOwnProperty('options')) {
+                options = eval('(' + field.attrs.options + ')');
+                child_field = options.child_field;
+            }
             $("#dynatree").dynatree({
                 onLazyRead: function(node) {
                     field.rpc('/web/dynatree/expand',
                               {'node_id': node.data.oerp_id,
-                               'model': field.attrs.relation}).then(
+                               'child_field': child_field,
+                               'model': field.attrs.relation}
+                             ).then(
                                   function(result) {
                                       node.setLazyNodeStatus(DTNodeStatus_Ok);
                                       node.addChild(result);

@@ -24,7 +24,7 @@ class PocController(openerpweb.Controller):
 
     @openerpweb.jsonrequest
     def expand(self, request, model=None, node_id=None,
-               child_field='child_ids'):
+               child_field='child_id'):
         """Return the list of direct children of the current node.
 
         If node_id is None, the records that have no parents are returned.
@@ -44,12 +44,15 @@ class PocController(openerpweb.Controller):
         return self.dynatree_nodes(model, child_ids, child_field=child_field)
 
     def dynatree_nodes(self, model, ids, title_field='name',
-                       child_field='child_id'):
+                       child_field=None):
         """Return Dynatree nodes representation from a list of ids.
         """
 
         if not ids:
             return []
+
+        if child_field is None:
+            child_field = 'child_id'  # front JS will always pass None
 
         records = model.read(ids, (title_field, child_field))
         has_children = lambda record: bool(record[child_field])
