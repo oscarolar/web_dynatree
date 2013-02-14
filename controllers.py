@@ -1,7 +1,8 @@
 try:
     import openerp.addons.web.common.http as openerpweb
 except ImportError:
-    import web.common.http as openerpweb
+    import web.common.http as openerpweb  # noqa
+
 
 class PocController(openerpweb.Controller):
 
@@ -21,13 +22,13 @@ class PocController(openerpweb.Controller):
         session = request.session
         return session.model('res.users').read([session._uid])[0]['name']
 
-
     @openerpweb.jsonrequest
     def expand(self, request, model=None, node_id=None):
         """Return the list of direct children of the current node.
 
         If node_id is None, the records that have no parents are returned.
-        model is a kw argument for the sake of expliciteness, but it's required.
+        model is a kw argument for the sake of expliciteness,
+        but it's required.
         """
 
         if model is None:
@@ -42,7 +43,7 @@ class PocController(openerpweb.Controller):
         return self.dynatree_nodes(model, child_ids)
 
     def dynatree_nodes(self, model, ids, title_field='name',
-                      child_field='child_id'):
+                       child_field='child_id'):
         """Return Dynatree nodes representation from a list of ids.
         """
 
@@ -58,4 +59,3 @@ class PocController(openerpweb.Controller):
                      isLazy=has_children(record),
                      )
                 for record in records]
-
