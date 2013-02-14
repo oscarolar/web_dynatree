@@ -23,7 +23,8 @@ class PocController(openerpweb.Controller):
         return session.model('res.users').read([session._uid])[0]['name']
 
     @openerpweb.jsonrequest
-    def expand(self, request, model=None, node_id=None):
+    def expand(self, request, model=None, node_id=None,
+               child_field='child_ids'):
         """Return the list of direct children of the current node.
 
         If node_id is None, the records that have no parents are returned.
@@ -38,9 +39,9 @@ class PocController(openerpweb.Controller):
         if node_id is None:
             child_ids = model.search([('parent_id', '=', False)])
         else:
-            child_ids = model.read([node_id])[0]['child_id']
+            child_ids = model.read([node_id])[0][child_field]
 
-        return self.dynatree_nodes(model, child_ids)
+        return self.dynatree_nodes(model, child_ids, child_field=child_field)
 
     def dynatree_nodes(self, model, ids, title_field='name',
                        child_field='child_id'):

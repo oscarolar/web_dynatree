@@ -30,7 +30,7 @@ openerp.web_dynatree = function (openerp) {
                     field.view.do_search();
                 },
                 persist: false,
-                children: [{title: "Categories", oerp_id: null,
+                children: [{title: field.attrs.string, oerp_id: null,
                             isFolder : true, isLazy: true}]
             });
 
