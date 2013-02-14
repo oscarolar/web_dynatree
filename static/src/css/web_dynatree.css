@@ -1,45 +1,35 @@
 div.oe_dynatree {
   z-index: 100;
-  min-width: 21em;
-  border: 1px solid rgb(123, 123, 123);
-  border-top: none;
+  display: block;
+  position: absolute;
+  background: none;
 }
 
-div.oe_dynatree .dynatree-icon {
+span.oe_dynatree .dynatree-icon {
     background: none;
     margin: 0;
     width: 0;
 }
 
-div.oe_dynatree a {
-    padding-left: 0;
-}
-
 .oe_dynatree_summary {
-  width: 20em;
-  height: 2.5ex;
-  border: 1px solid rgb(123, 123, 123);
-  background-color: white;
-  border-radius: 5px 5px 0 0;
-  padding: .5ex .5em;
-  vertical-align: center;
+  padding-left: 25px;
 }
 
 .oe_dynatree_summary span {
-  color: rgb(123, 123, 123);
-  font-style: italic;
+  color: #999;
 }
 
-.oe_dynatree_button_toggle {
-  border: none;
-  background-color: white;
-  float: right;
-  margin: -19px 0 0 0;
-  padding: 0;
-}
 
 div.oe_dynatree ul {
   border: none;
 }
 
+span.dynatree-icon {
+  display: none;
+}
 
+ul.dynatree-container {
+margin: 1px 4px;
+padding: 0;
+border: 1px solid #999;
+}

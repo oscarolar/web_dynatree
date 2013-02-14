@@ -33,11 +33,11 @@ openerp.web_dynatree = function (openerp) {
                     // Note: we also get this event, if persistence is on,
                     // and the page is reloaded.
                     field.dynatree_selected = node.data.oerp_id;
-                    $('#dynatree-summary')[0].textContent = node.data.title;
+                    $('#dynatree-summary')[0].value = node.data.title;
                     field.view.do_search();
                 },
                 persist: false,
-                children: [{title: field.attrs.string, oerp_id: null,
+                children: [{title: "", oerp_id: null,
                             isFolder : true, isLazy: true}]
             });
 

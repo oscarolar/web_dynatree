@@ -10,9 +10,9 @@
         <t t-esc="attrs.string || attrs.name"/>
         <span t-if="attrs.help">?</span>
     </label>
-    <div id="dynatree-summary" class="oe_dynatree_summary">
-      <span>Sélectionner ci-dessous</span>
+    <div>
+    <div id="dynatree" class="oe_dynatree"></div>
+    <input type="text" size="15" id="dynatree-summary" class="openerp" />
     </div>
-    <div id="dynatree" class="oe_dynatree" style="position:absolute"></div>
   </t>
 </templates>
