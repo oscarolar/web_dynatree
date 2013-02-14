@@ -11,8 +11,8 @@ span.oe_dynatree .dynatree-icon {
     width: 0;
 }
 
-.oe_dynatree_summary {
-  padding-left: 25px;
+#dynatree-summary {
+  padding-left: 28px;
 }
 
 .oe_dynatree_summary span {
