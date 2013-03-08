@@ -14,11 +14,3 @@ categories in the products search page.
 This project is at an early stage, feel free to contribute, and keep
 posted ! See the included ``TODO.txt`` to see what's in the pipe.
 
-.. warning:: 
-
-    The controller can be load in 6.1 and 7.0 version of openerp.
-    But this module have never been testing in 7.0. We add it juste 
-    for use the lib dynatree in 7.0
-
-
-

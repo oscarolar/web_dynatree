@@ -1,5 +1,5 @@
 try:
-    import openerp.addons.web.http as openerpweb
+    import openerp.addons.web.common.http as openerpweb
 except ImportError:
     import web.common.http as openerpweb  # noqa
 
