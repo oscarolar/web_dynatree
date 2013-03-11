@@ -15,12 +15,12 @@ openerp.web_dynatree = function (instance) {
             this._onSelect = onSelect;
             this._onActivate = onActivate;
             this._oerp_ids = []
-            openerp.connection.rpc('/web/dynatree/get_children', {
+            this.rpc('/web/dynatree/get_children', {
                 'model': this._configuration.model,
                 'oerp_id': null,
                 'init_domain': this._configuration.init_domain,
-                'child_field': this.dynatree.child_field,
-                'checkbox_field': this.dynatree.checkbox_field,
+                'child_field': this._configuration.child_field,
+                'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
                 'context': this._context,
                 }).then(function (children) {
@@ -76,5 +76,59 @@ openerp.web_dynatree = function (instance) {
             $('#' + this.dynatree_id).css("display",
                                this.dynatree_displayed ? "block" : "none");
         }
+    });
+
+    instance.web.form.widgets.add('m2o_dynatree', 
+            'instance.web.form.M2O_Dynatree');
+
+    instance.web.form.M2O_Dynatree = instance.web.form.AbstractField.extend(
+            instance.web.form.ReinitializeFieldMixin, {
+        template: 'M2O_Dynatree',
+        init: function(field_manager, node) {
+            this._super(field_manager, node);
+            this.set({'value': false});
+            this.configuration = {}
+            console.log(this);
+            this._dynatree = new instance.web.Dynatree(
+                  this.id_for_label,
+                  this.configuration//,
+                  //context={},
+                  //use_checkbox=false,
+                  //onSelect=function(oerp_ids){},
+                  //onActivate=function(oerp_id, title){}
+                  );
+        },
+        render_value: function(no_recurse) {
+            var self = this;
+            if (! this.get("value")) {
+                this.display_string("");
+                return;
+            }
+            this.display_string(this.get("value")[1]);
+        },
+        display_string: function(str) {
+            var self = this;
+            var lines = _.escape(str).split("\n");
+            var link = "";
+            var follow = "";
+            link = lines[0];
+            follow = _.rest(lines).join("<br />");
+            if (follow)
+                link += "<br />";
+            var $link = this.$el.find('.oe_form_uri')
+                 .unbind('click')
+                 .html(link);
+            $link.click(function () {
+                self.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: self.field.relation,
+                    res_id: self.get("value")[0],
+                    views: [[false, 'form']],
+                    target: 'current'
+                });
+                return false;
+             });
+            $(".oe_form_m2o_follow", this.$el).html(follow);
+        },
     });
 };

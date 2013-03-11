@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
+    <t t-name="M2O_Dynatree">
+        <span class="oe_form_field oe_form_field_many2one" 
+            t-att-style="widget.node.attrs.style">
+            <t t-if="!widget.get('effective_readonly')">
+                <div t-att-id="'dynatree_' + widget.id_for_label" 
+                    class="oe_dynatree"/>
+            </t>
+            <a href="#" class="oe_form_uri"/>
+            <span class="oe_form_m2o_follow"/>
+        </span>
+    </t>
 </templates>
