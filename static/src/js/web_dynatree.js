@@ -1,20 +1,14 @@
 openerp.web_dynatree = function (instance) {
     instance.web.Dynatree = instance.web.Widget.extend({
-        init: function(
-                  dynatree_id,
-                  configuration,
-                  context={},
-                  use_checkbox=false,
-                  onSelect=function(oerp_ids){},
-                  onActivate=function(oerp_id, title){}
-                  ) {
+        init: function(dynatree_id, configuration, context={}, use_checkbox=false) {
             this.dynatree_id = dynatree_id;
             this._configuration = configuration;
             this._context = context;
             this._use_checkbox = use_checkbox;
-            this._onSelect = onSelect;
-            this._onActivate = onActivate;
+            this._onSelect = function(oerp_ids){},
+            this._onActivate = function(oerp_id, title){}
             this._oerp_ids = []
+            var self = this;
             this.rpc('/web/dynatree/get_children', {
                 'model': this._configuration.model,
                 'oerp_id': null,
@@ -22,6 +16,7 @@ openerp.web_dynatree = function (instance) {
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
+                'init': true,
                 'context': this._context,
                 }).then(function (children) {
                     self.load_dynatree(children);
@@ -30,10 +25,11 @@ openerp.web_dynatree = function (instance) {
         },
         load_dynatree: function (children) {
             var self = this;
-            $("#" + this.dynatree_id).dynatree({
+            $("#dynatree_" + this.dynatree_id).dynatree({
                 checkbox: this.use_checkbox,
+                selectMode: 3,
                 onLazyRead: function(node) {
-                    openerp.connection.rpc('/web/dynatree/get_children', {
+                    self.rpc('/web/dynatree/get_children', {
                         'model': node.data.oerp_model,
                         'oerp_id': node.data.oerp_id,
                         'init_domain': node.data.oerp_domain,
@@ -61,7 +57,7 @@ openerp.web_dynatree = function (instance) {
                     self._onSelect(self._oerp_ids);
                 },
                 onActivate: function(node) {
-                    self.onActivate(node.data.oerp_id, node.data.title);
+                    self._onActivate(node.data.oerp_id, node.data.title);
                 },
                 persist: false,
                 children: children
@@ -75,7 +71,13 @@ openerp.web_dynatree = function (instance) {
             this.dynatree_displayed = !(this.dynatree_displayed);
             $('#' + this.dynatree_id).css("display",
                                this.dynatree_displayed ? "block" : "none");
-        }
+        },
+        add_callback_onSelect: function(callback) {
+            this._onSelect = callback;
+        },
+        add_callback_onActivate: function(callback) {
+            this._onActivate = callback;
+        },
     });
 
     instance.web.form.widgets.add('m2o_dynatree', 
@@ -87,16 +89,11 @@ openerp.web_dynatree = function (instance) {
         init: function(field_manager, node) {
             this._super(field_manager, node);
             this.set({'value': false});
-            this.configuration = {}
-            console.log(this);
-            this._dynatree = new instance.web.Dynatree(
-                  this.id_for_label,
-                  this.configuration//,
-                  //context={},
-                  //use_checkbox=false,
-                  //onSelect=function(oerp_ids){},
-                  //onActivate=function(oerp_id, title){}
-                  );
+            this.configuration = {
+                model: 'product.category',
+                child_field: 'child_id',
+                init_domain: [['parent_id', '=', false]],
+            }
         },
         render_value: function(no_recurse) {
             var self = this;
@@ -105,6 +102,15 @@ openerp.web_dynatree = function (instance) {
                 return;
             }
             this.display_string(this.get("value")[1]);
+            if (!this.get('effective_readonly')){
+                this._dynatree = new instance.web.Dynatree(
+                      this.id_for_label,
+                      this.configuration,
+                      context={},
+                      use_checkbox=false
+                      );
+                this._dynatree.add_callback_onActivate(this.dynatree_onActivate);
+            }
         },
         display_string: function(str) {
             var self = this;
@@ -129,6 +135,11 @@ openerp.web_dynatree = function (instance) {
                 return false;
              });
             $(".oe_form_m2o_follow", this.$el).html(follow);
+        },
+        dynatree_onActivate: function (oerp_id, title){
+            console.log('onActivate');
+            console.log(oerp_id);
+            console.log(title);
         },
     });
 };
