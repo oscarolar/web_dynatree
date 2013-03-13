@@ -6,9 +6,13 @@
             <t t-if="!widget.get('effective_readonly')">
                 <div t-att-id="'dynatree_' + widget.id_for_label" 
                     class="oe_dynatree"/>
+                <a href="#" class="oe_form_uri oe_dynatree_without_checkbox"/>
+                <span class="oe_form_m2o_follow"/>
             </t>
-            <a href="#" class="oe_form_uri"/>
-            <span class="oe_form_m2o_follow"/>
+            <t t-if="widget.get('effective_readonly')">
+                <a href="#" class="oe_form_uri"/>
+                <span class="oe_form_m2o_follow"/>
+            </t>
         </span>
     </t>
 </templates>

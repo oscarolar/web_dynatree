@@ -31,6 +31,7 @@ openerp.web_dynatree = function (instance) {
             $("#dynatree_" + this.dynatree_id).dynatree({
                 checkbox: this.use_checkbox,
                 selectMode: 3,
+                clickFolderMode: 1,
                 onLazyRead: function(node) {
                     self.rpc('/web/dynatree/get_children', {
                         'model': node.data.oerp_model,
@@ -107,8 +108,6 @@ openerp.web_dynatree = function (instance) {
                 domain: domain,
                 init_domain: init_domain,
             }
-            var context = eval('(' + this.node.attrs.context + ')');
-            this._context = _.extend({}, this.session.user_context, context);
         },
         render_value: function(no_recurse) {
             var self = this;
@@ -125,7 +124,7 @@ openerp.web_dynatree = function (instance) {
                 this._dynatree = new instance.web.Dynatree(
                       this.id_for_label,
                       this.configuration,
-                      context=this._context,
+                      context=this.session.user_context,
                       use_checkbox=false
                       );
                 this._dynatree.add_callback_onActivate(this, 

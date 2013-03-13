@@ -2,6 +2,9 @@
 import openerp.addons.web.http as openerpweb
 from openerp.tools.translate import _
 
+def safe_eval(str):
+    return eval(str, {'__buildins__': None, 'True': True, 'False': False})
+
 
 class DynatreeController(openerpweb.Controller):
 
@@ -56,7 +59,7 @@ class DynatreeController(openerpweb.Controller):
     def _get_first_activate_node(self, obj, model, init_domain, domain,
                                  child_field, context):
         if isinstance(init_domain, str):
-            init_domain = eval(init_domain)
+            init_domain = safe_eval(init_domain)
         obj_ids = obj.search(init_domain, context=context)
         return self._get_children_node(obj, model, obj_ids, domain,
                                        child_field, None, False, context)
@@ -66,7 +69,7 @@ class DynatreeController(openerpweb.Controller):
         obj_ids = obj.read(oerp_id, [child_field], context=context)[child_field]
         d = [('id', 'in', obj_ids)]
         if isinstance(domain, str):
-            d.extend(eval(domain))
+            d.extend(safe_eval(domain))
         elif isinstance(domain, (list, tuple)):
             d.extend(domain)
         obj_ids = obj.search(d, context=context)
