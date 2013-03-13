@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 import openerp.addons.web.http as openerpweb
 from openerp.tools.translate import _
-
-def safe_eval(str):
-    return eval(str, {'__buildins__': None, 'True': True, 'False': False})
-
+from openerp.tools.safe_eval import safe_eval
 
 class DynatreeController(openerpweb.Controller):
 
