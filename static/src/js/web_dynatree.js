@@ -14,6 +14,7 @@ openerp.web_dynatree = function (instance) {
             this.rpc('/web/dynatree/get_children', {
                 'model': this._configuration.model,
                 'oerp_id': null,
+                'domain': this._configuration.domain,
                 'init_domain': this._configuration.init_domain,
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
@@ -34,7 +35,8 @@ openerp.web_dynatree = function (instance) {
                     self.rpc('/web/dynatree/get_children', {
                         'model': node.data.oerp_model,
                         'oerp_id': node.data.oerp_id,
-                        'init_domain': node.data.oerp_domain,
+                        'domain': node.data.oerp_domain,
+                        'init_domain': self._configuration.init_domain,
                         'child_field': node.data.oerp_child_field,
                         'checkbox_field': node.data.oerp_checkbox_field,
                         'use_checkbox': self._use_checkbox,
@@ -96,17 +98,15 @@ openerp.web_dynatree = function (instance) {
             this._super(field_manager, node);
             this.set({'value': false});
             this._display_value = {}
-            console.log(this);
-            option = eval('(' + this.node.attrs.option + ')') || null;
-            child_field = 'child_ids';
-            if (option && option['child_field'])
-                child_field = option['child_field'];
+            child_field = this.node.attrs.child_field || 'child_ids';
+            init_domain = this.node.attrs.init_domain || [];
+            domain = this.node.attrs.domain || this.field.domain || [];
             this.configuration = {
                 model: this.field.relation,
                 child_field: child_field,
-                init_domain: [['parent_id', '=', false]],
+                domain: domain,
+                init_domain: init_domain,
             }
-            console.log(this.configuration);
             var context = eval('(' + this.node.attrs.context + ')');
             this._context = _.extend({}, this.session.user_context, context);
         },

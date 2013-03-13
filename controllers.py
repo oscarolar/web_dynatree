@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import openerp.addons.web.http as openerpweb
+from openerp.tools.translate import _
 
 
 class DynatreeController(openerpweb.Controller):
@@ -26,6 +27,8 @@ class DynatreeController(openerpweb.Controller):
             fields.append(checkbox_field)
         reads = {}
         obj_reads = obj.read(oerp_ids, fields, context=context)
+        if obj_reads and obj_reads[0].get(child_field, None) is None:
+            return [_('No child fields valid')]
         for r in obj_reads:
             reads[r['id']] = {
                 'has_children': bool(r[child_field]),
@@ -50,40 +53,49 @@ class DynatreeController(openerpweb.Controller):
 
         return nodes
 
-    def _get_first_activate_node(self, obj, model, init_domain, child_field,
-                                 context):
+    def _get_first_activate_node(self, obj, model, init_domain, domain,
+                                 child_field, context):
+        if isinstance(init_domain, str):
+            init_domain = eval(init_domain)
         obj_ids = obj.search(init_domain, context=context)
-        return self._get_children_node(obj, model, obj_ids, [],
+        return self._get_children_node(obj, model, obj_ids, domain,
                                        child_field, None, False, context)
 
-    def _get_next_activate_node(self, obj, model, oerp_id, child_field,
-                                 context):
+    def _get_next_activate_node(self, obj, model, oerp_id, domain, child_field,
+                                context):
         obj_ids = obj.read(oerp_id, [child_field], context=context)[child_field]
-        return self._get_children_node(obj, model, obj_ids, [],
+        d = [('id', 'in', obj_ids)]
+        if isinstance(domain, str):
+            d.extend(eval(domain))
+        elif isinstance(domain, (list, tuple)):
+            d.extend(domain)
+        obj_ids = obj.search(d, context=context)
+        return self._get_children_node(obj, model, obj_ids, domain,
                                        child_field, None, False, context)
 
-    def _get_children(self, obj, model, oerp_id, init_domain, child_field,
-                      checkbox_field, use_checkbox, init, context):
+    def _get_children(self, obj, model, oerp_id, init_domain, domain,
+                      child_field, checkbox_field, use_checkbox, init,
+                      context):
         if not use_checkbox:
             if init:
-                return self._get_children_none(model, init_domain,
+                return self._get_children_none(model, domain,
                                                child_field, checkbox_field)
             elif not oerp_id:
                 return self._get_first_activate_node(
-                    obj, model, init_domain, child_field, context)
+                    obj, model, init_domain, domain, child_field, context)
             else:
                 return self._get_next_activate_node(
-                    obj, model, oerp_id, child_field, context)
+                    obj, model, oerp_id, domain, child_field, context)
 
         return self._get_children_none(model, init_domain,
                                                child_field, checkbox_field)
 
     @openerpweb.jsonrequest
     def get_children(self, request, model=None, oerp_id=None, init_domain=[],
-               child_field='child_ids', checkbox_field=None,
+               domain=[], child_field='child_ids', checkbox_field=None,
                use_checkbox=False, init=False, context=None):
         obj = request.session.model(model)
-        return self._get_children(obj, model, oerp_id, init_domain,
+        return self._get_children(obj, model, oerp_id, init_domain, domain,
                                   child_field, checkbox_field,
                                   use_checkbox, init, context)
 
