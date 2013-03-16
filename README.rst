@@ -16,9 +16,8 @@ posted ! See the included ``TODO.txt`` to see what's in the pipe.
 
 .. warning:: 
 
-    The controller can be load in 6.1 and 7.0 version of openerp.
-    But this module have never been testing in 7.0. We add it juste 
-    for use the lib dynatree in 7.0
+    The controller can be loaded in 6.1 and 7.0 version of openerp.
+    But this module has never been tested in 7.0 yet.
 
 
 
