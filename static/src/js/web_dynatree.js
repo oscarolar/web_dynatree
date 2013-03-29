@@ -11,15 +11,13 @@ openerp.web_dynatree = function (instance) {
             this._onActivateObject = null;
             this._oerp_ids = []
             var self = this;
-            this.rpc('/web/dynatree/get_children', {
+            this.rpc('/web/dynatree/get_first_node', {
                 'model': this._configuration.model,
-                'oerp_id': null,
                 'domain': this._configuration.domain,
-                'init_domain': this._configuration.init_domain,
+                'first_node_domain': this._configuration.first_node_domain,
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
-                'init': true,
                 'context': this._context,
                 }).then(function (children) {
                     self.load_dynatree(children);
@@ -37,7 +35,7 @@ openerp.web_dynatree = function (instance) {
                         'model': node.data.oerp_model,
                         'oerp_id': node.data.oerp_id,
                         'domain': node.data.oerp_domain,
-                        'init_domain': self._configuration.init_domain,
+                        'first_node_domain': self._configuration.first_node_domain,
                         'child_field': node.data.oerp_child_field,
                         'checkbox_field': node.data.oerp_checkbox_field,
                         'use_checkbox': self._use_checkbox,
@@ -102,13 +100,13 @@ openerp.web_dynatree = function (instance) {
             this.set({'value': false});
             this._display_value = {}
             child_field = this.node.attrs.child_field || 'child_ids';
-            init_domain = this.node.attrs.init_domain || [];
+            first_node_domain = this.node.attrs.first_node_domain || [];
             domain = this.node.attrs.domain || this.field.domain || [];
             this.configuration = {
                 model: this.field.relation,
                 child_field: child_field,
                 domain: domain,
-                init_domain: init_domain,
+                first_node_domain: first_node_domain,
             }
         },
         render_value: function(no_recurse) {
