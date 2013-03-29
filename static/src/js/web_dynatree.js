@@ -65,6 +65,8 @@ openerp.web_dynatree = function (instance) {
                 onActivate: function(node) {
                     self._onActivate(self._onActivateObject, 
                             node.data.oerp_id, node.data.title);
+                    // collapse the first node after choose/activate the node
+                    node._parentList()[0]._expand(false);
                 },
                 persist: false,
                 children: children
@@ -160,5 +162,12 @@ openerp.web_dynatree = function (instance) {
             self._display_value[oerp_id] = title;
             self.render_value();
         },
+    });
+
+    instance.web.form.widgets.add('m2m_dynatree', 
+            'instance.web.form.M2M_Dynatree');
+
+    instance.web.form.M2M_Dynatree = instance.web.form.AbstractField.extend(
+            instance.web.form.ReinitializeFieldMixin, {
     });
 };
