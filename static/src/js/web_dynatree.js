@@ -1,6 +1,6 @@
 openerp.web_dynatree = function (instance) {
     instance.web.Dynatree = instance.web.Widget.extend({
-        init: function(dynatree_id, configuration, context={}, use_checkbox=false) {
+        init: function(dynatree_id, configuration, context=, use_checkbox) {
             this.dynatree_id = dynatree_id;
             this._configuration = configuration;
             this._context = context;
