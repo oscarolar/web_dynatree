@@ -3,6 +3,7 @@ import openerp.addons.web.http as openerpweb
 from openerp.tools.translate import _
 from openerp.tools.safe_eval import safe_eval
 
+
 class DynatreeController(openerpweb.Controller):
 
     _cp_path = '/web/dynatree'
@@ -75,7 +76,8 @@ class DynatreeController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def get_children(self, request, model=None, oerp_id=None,
                      first_node_domain=[], domain=[], child_field='child_ids', checkbox_field=None,
-                     use_checkbox=False, context=None):
+                     use_checkbox=False):
+        context = request.context
         obj = request.session.model(model)
         oerp_ids = self._get_oerp_ids(
             obj, oerp_id, first_node_domain, domain, child_field, context)
@@ -85,8 +87,9 @@ class DynatreeController(openerpweb.Controller):
 
     @openerpweb.jsonrequest
     def get_first_node(self, request, model=None, first_node_domain=[],
-               domain=[], child_field='child_ids', checkbox_field=None,
-               use_checkbox=False, context=None):
+                       domain=[], child_field='child_ids', checkbox_field=None,
+                       use_checkbox=False):
+        context = request.context
         if use_checkbox:
             obj = request.session.model(model)
             oerp_ids = self._get_oerp_ids(

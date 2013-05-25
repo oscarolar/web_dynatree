@@ -13,8 +13,8 @@ openerp.web_dynatree = function (instance) {
             var self = this;
             this.rpc('/web/dynatree/get_first_node', {
                 'model': this._configuration.model,
-                'domain': this._configuration.domain,
                 'first_node_domain': this._configuration.first_node_domain,
+                'domain': this._configuration.domain,
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
@@ -34,8 +34,8 @@ openerp.web_dynatree = function (instance) {
                     self.rpc('/web/dynatree/get_children', {
                         'model': node.data.oerp_model,
                         'oerp_id': node.data.oerp_id,
-                        'domain': node.data.oerp_domain,
                         'first_node_domain': self._configuration.first_node_domain,
+                        'domain': node.data.oerp_domain,
                         'child_field': node.data.oerp_child_field,
                         'checkbox_field': node.data.oerp_checkbox_field,
                         'use_checkbox': self._use_checkbox,
