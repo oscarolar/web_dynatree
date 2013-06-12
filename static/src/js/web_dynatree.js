@@ -1,15 +1,31 @@
 openerp.web_dynatree = function (instance) {
     instance.web.Dynatree = instance.web.Widget.extend({
-        init: function(dynatree_id, configuration, context={}, use_checkbox=false) {
+        init: function(dynatree_id, configuration, context={}, 
+                  use_checkbox=false, selectMode="multi", 
+                  selected_oerp_ids=[]) {
             this.dynatree_id = dynatree_id;
             this._configuration = configuration;
             this._context = context;
             this._use_checkbox = use_checkbox;
-            this._onSelect = function(object, oerp_ids){},
+            this._onSelect = function(object, oerp_ids){};
             this._onSelectObject = null;
-            this._onActivate = function(object, oerp_id, title){}
+            this._onActivate = function(object, oerp_id, title){};
             this._onActivateObject = null;
-            this._oerp_ids = []
+            this._classNames = {checkbox: "dynatree-checkbox"};
+            switch (selectMode){
+                case 'single':
+                    this._selectMode = 1;
+                    this._classNames = {checkbox: "dynatree-radio"};
+                    break;
+                case 'multi-hier':
+                    this._selectMode = 3;
+                    break;
+                case 'multi':
+                    // make nothing because multi and default are same
+                default:
+                    this._selectMode = 2;
+                    break;
+            }
             var self = this;
             this.rpc('/web/dynatree/get_first_node', {
                 'model': this._configuration.model,
@@ -18,6 +34,7 @@ openerp.web_dynatree = function (instance) {
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
+                'selected_oerp_ids': selected_oerp_ids,
                 'context': this._context,
                 }).then(function (children) {
                     self.load_dynatree(children);
@@ -27,8 +44,9 @@ openerp.web_dynatree = function (instance) {
         load_dynatree: function (children) {
             var self = this;
             $("#dynatree_" + this.dynatree_id).dynatree({
-                checkbox: this.use_checkbox,
-                selectMode: 3,
+                checkbox: this._use_checkbox,
+                selectMode: this._selectMode,
+                classNames: this._classNames,
                 clickFolderMode: 1,
                 onLazyRead: function(node) {
                     self.rpc('/web/dynatree/get_children', {
@@ -46,25 +64,23 @@ openerp.web_dynatree = function (instance) {
                     });
                 },
                 onSelect: function(flag, node){
-                    if (flag) {
-                        if (self._oerp_ids) {
-                            self._oerp_ids = _.union(self._oerp_ids, 
-                                                    [node.data.oerp_id]);
-                        } else {
-                            self._oerp_ids = [node.data.oerp_id];
-                        }
-                    } else {
-                        self._oerp_ids = _.without(
-                                self._oerp_ids, [node.data.oerp_id]);
-                    }
+                    var selectedNodes = node.tree.getSelectedNodes();
+                    var selected_oerp_ids = $.map(selectedNodes, function(node){
+                        return node.data.oerp_id;
+                    });
+                    console.log('onSelect : ' + selected_oerp_ids);
                     self._onSelect(self._onSelectObject, 
-                            self._object, self._oerp_ids);
+                            self._object, selected_oerp_ids);
                 },
                 onActivate: function(node) {
                     self._onActivate(self._onActivateObject, 
                             node.data.oerp_id, node.data.title);
                     // collapse the first node after choose/activate the node
-                    node._parentList()[0]._expand(false);
+                    parentList = node._parentList();
+                    if (parentList[0])
+                        parentList[0]._expand(false);
+                    else
+                        node._expand(false);
                 },
                 persist: false,
                 children: children
@@ -97,7 +113,6 @@ openerp.web_dynatree = function (instance) {
         template: 'M2O_Dynatree',
         init: function(field_manager, node) {
             this._super(field_manager, node);
-            this.set({'value': false});
             this._display_value = {}
             child_field = this.node.attrs.child_field || 'child_ids';
             first_node_domain = this.node.attrs.first_node_domain || [];
@@ -109,7 +124,7 @@ openerp.web_dynatree = function (instance) {
                 first_node_domain: first_node_domain,
             }
         },
-        render_value: function(no_recurse) {
+        render_value: function() {
             var self = this;
             if (! this.get("value")) {
                 this.display_string("");
@@ -167,5 +182,47 @@ openerp.web_dynatree = function (instance) {
 
     instance.web.form.M2M_Dynatree = instance.web.form.AbstractField.extend(
             instance.web.form.ReinitializeFieldMixin, {
+        template: 'M2M_Dynatree',
+        init: function(field_manager, node) {
+            this._super(field_manager, node);
+            child_field = this.node.attrs.child_field || 'child_ids';
+            checkbox_field = this.node.attrs.checkbox_field || '';
+            first_node_domain = this.node.attrs.first_node_domain || [];
+            this.selectmode = this.node.attrs.selectmode || 'multi';
+            domain = this.node.attrs.domain || this.field.domain || [];
+            this.configuration = {
+                model: this.field.relation,
+                child_field: child_field,
+                checkbox_field: checkbox_field,
+                domain: domain,
+                first_node_domain: first_node_domain,
+            }
+            this.set({'value': []});
+            console.log('INIT        ');
+            this.no_rerender = true;
+        },
+        render_value: function() {
+            console.log('render : ' + this.get('value'));
+            this._dynatree = new instance.web.Dynatree(
+                this.id_for_label,
+                this.configuration,
+                context=this.session.user_context,
+                use_checkbox=true,
+                selectMode=this.selectmode,
+                selected_oerp_ids = this.get('value')
+            );
+            this._dynatree.add_callback_onSelect(this, 
+                    this.dynatree_onSelect);
+        },
+        set_value: function(value_) {
+            value_ = value_ || [];
+            if (value_.length >= 1 && value_[0] instanceof Array) {
+                value_ = value_[0][2];
+            }
+            this._super(value_);
+        },
+        dynatree_onSelect: function (self, object, selected_oerp_ids){
+            self.set_value(selected_oerp_ids);
+        },
     });
 };

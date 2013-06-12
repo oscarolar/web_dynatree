@@ -23,7 +23,8 @@ class DynatreeController(openerpweb.Controller):
         }]
 
     def _get_children_node(self, obj, model, oerp_ids, domain,
-                           child_field, checkbox_field, use_checkbox, context):
+                           child_field, checkbox_field, use_checkbox,
+                           selected_oerp_ids, context):
         fields = [child_field]
         if checkbox_field:
             fields.append(checkbox_field)
@@ -37,7 +38,7 @@ class DynatreeController(openerpweb.Controller):
                 'hideCheckbox': True,
             }
             if checkbox_field:
-                reads[r['id']]['hideCheckbox'] = bool(r[checkbox_field])
+                reads[r['id']]['hideCheckbox'] = not bool(r[checkbox_field])
 
         nodes = []
         for id, title in obj.name_get(oerp_ids, context=context):
@@ -48,6 +49,7 @@ class DynatreeController(openerpweb.Controller):
                 'isFolder': reads[id]['has_children'],
                 'isLazy': reads[id]['has_children'],
                 'hideCheckbox': reads[id]['hideCheckbox'],
+                'select': id in selected_oerp_ids,
                 'oerp_domain': domain,
                 'oerp_child_field': child_field,
                 'oerp_checkbox_field': checkbox_field,
@@ -75,25 +77,25 @@ class DynatreeController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def get_children(self, request, model=None, oerp_id=None,
                      first_node_domain=[], domain=[], child_field='child_ids', checkbox_field=None,
-                     use_checkbox=False, context=None):
+                     use_checkbox=False, selected_oerp_ids=[], context=None):
         obj = request.session.model(model)
         oerp_ids = self._get_oerp_ids(
             obj, oerp_id, first_node_domain, domain, child_field, context)
         return self._get_children_node(
             obj, model, oerp_ids, domain, child_field, checkbox_field,
-            use_checkbox, context)
+            use_checkbox, selected_oerp_ids, context)
 
     @openerpweb.jsonrequest
     def get_first_node(self, request, model=None, first_node_domain=[],
                domain=[], child_field='child_ids', checkbox_field=None,
-               use_checkbox=False, context=None):
+               use_checkbox=False, selected_oerp_ids=[], context=None):
         if use_checkbox:
             obj = request.session.model(model)
             oerp_ids = self._get_oerp_ids(
                 obj, None, first_node_domain, domain, child_field, context)
             return self._get_children_node(
                 obj, model, oerp_ids, domain, child_field, checkbox_field,
-                use_checkbox, context)
+                use_checkbox, selected_oerp_ids, context)
         else:
             return self._get_children_none(
                 model, first_node_domain, domain, child_field, checkbox_field)
