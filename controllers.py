@@ -36,7 +36,7 @@ class DynatreeController(openerpweb.Controller):
         for r in obj_reads:
             reads[r['id']] = {
                 'has_children': bool(r[child_field]),
-                'hideCheckbox': True,
+                'hideCheckbox': not use_checkbox,
             }
             if checkbox_field:
                 reads[r['id']]['hideCheckbox'] = not bool(r[checkbox_field])
