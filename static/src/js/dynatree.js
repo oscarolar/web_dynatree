@@ -25,8 +25,8 @@ openerp.web_dynatree.dynatree = function (instance) {
             var self = this;
             this.rpc('/web/dynatree/get_first_node', {
                 'model': this._configuration.model,
-                'first_node_domain': this._configuration.first_node_domain,
-                'domain': this._configuration.domain,
+                'first_node_domain': this._configuration.first_node_domain || [],
+                'domain': this._configuration.domain || [],
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
@@ -65,7 +65,7 @@ openerp.web_dynatree.dynatree = function (instance) {
                         return node.data.oerp_id;
                     });
                     console.log('onSelect : ' + selected_oerp_ids);
-                    self.onSelect(self._object, selected_oerp_ids);
+                    self.onSelect(selected_oerp_ids);
                 },
                 onActivate: function(node) {
                     self.onActivate(node.data.oerp_id, node.data.title);
