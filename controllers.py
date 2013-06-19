@@ -26,6 +26,8 @@ class DynatreeController(openerpweb.Controller):
     def _get_children_node(self, obj, model, oerp_ids, domain,
                            child_field, checkbox_field, use_checkbox,
                            selected_oerp_ids, context):
+        if selected_oerp_ids is None:
+            selected_oerp_ids = []
         fields = [child_field]
         if checkbox_field:
             fields.append(checkbox_field)
@@ -33,6 +35,12 @@ class DynatreeController(openerpweb.Controller):
         obj_reads = obj.read(oerp_ids, fields, context=context)
         if obj_reads and obj_reads[0].get(child_field, None) is None:
             return [_('No child fields valid')]
+
+        if use_checkbox and len(oerp_ids) == 1 and checkbox_field:
+            if bool(obj_reads[0][checkbox_field]):
+                if obj_reads[0]['id'] not in selected_oerp_ids:
+                    selected_oerp_ids.append(obj_reads[0]['id'])
+
         for r in obj_reads:
             reads[r['id']] = {
                 'has_children': bool(r[child_field]),
@@ -78,7 +86,7 @@ class DynatreeController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def get_children(self, request, model=None, oerp_id=None,
                      first_node_domain=[], domain=[], child_field='child_ids', checkbox_field=None,
-                     use_checkbox=False, selected_oerp_ids=[], context=None):
+                     use_checkbox=False, selected_oerp_ids=None, context=None):
         context = request.context
         obj = request.session.model(model)
         oerp_ids = self._get_oerp_ids(
@@ -90,7 +98,7 @@ class DynatreeController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def get_first_node(self, request, model=None, first_node_domain=[],
                        domain=[], child_field='child_ids', checkbox_field=None,
-                       use_checkbox=False, selected_oerp_ids=[], context=None):
+                       use_checkbox=False, selected_oerp_ids=None, context=None):
         context = request.context
         if use_checkbox:
             obj = request.session.model(model)
