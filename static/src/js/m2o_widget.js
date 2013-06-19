@@ -21,17 +21,20 @@ openerp.web_dynatree.m2o_widget = function (instance) {
         render_value: function() {
             var self = this;
             if (!this.get('effective_readonly')){
-                this._dynatree = new instance.web.Dynatree({
-                    dynatree_id: this.id_for_label,
-                    configuration: this.configuration,
-                    context: this.session.user_context,
-                    use_checkbox: false,
-                    onActivate: function (oerp_id, title){
-                        debuggers;
-                        self.internal_set_value(oerp_id);
-                        self._display_value[oerp_id] = title;
-                        self.render_value();
-                    }});
+                if (! this._dynatree) {
+                    this._dynatree = new instance.web.Dynatree({
+                        dynatree_id: self.id_for_label,
+                        configuration: self.configuration,
+                        context: self.session.user_context,
+                        use_checkbox: false,
+                        onActivate: function (oerp_id, title){
+                            self.internal_set_value(oerp_id);
+                            self._display_value[oerp_id] = title;
+                            self.render_value();
+                        }});
+                }
+            }else{
+                delete this._dynatree;
             }
             if (! this.get("value")) {
                 this.display_string("");
