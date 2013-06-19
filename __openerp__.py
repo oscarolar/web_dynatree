@@ -1,8 +1,7 @@
 {
     "name": "Dynatree selectors",
     "category": "Hidden",
-    "description":
-        """
+    "description": """
         """,
     "version": "0.1",
     "depends": [
@@ -11,7 +10,10 @@
     "js": [
         "static/lib/js/jquery.cookie.js",
         "static/lib/js/jquery.dynatree.min.js",
-        "static/src/js/web_dynatree.js",
+        "static/src/js/boot.js",
+        "static/src/js/dynatree.js",
+        "static/src/js/m2o_widget.js",
+        "static/src/js/m2m_widget.js",
     ],
     "css": [
         "static/lib/css/*.css",
