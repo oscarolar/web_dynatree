@@ -27,12 +27,11 @@ openerp.web_dynatree.m2o_widget = function (instance) {
                     context: this.session.user_context,
                     use_checkbox: false,
                     onActivate: function (oerp_id, title){
+                        debuggers;
                         self.internal_set_value(oerp_id);
                         self._display_value[oerp_id] = title;
                         self.render_value();
                     }});
-                this._dynatree.add_callback_onActivate(this, 
-                        this.dynatree_onActivate);
             }
             if (! this.get("value")) {
                 this.display_string("");

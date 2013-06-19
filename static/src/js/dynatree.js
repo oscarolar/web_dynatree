@@ -5,8 +5,8 @@ openerp.web_dynatree.dynatree = function (instance) {
             this._configuration = obj.configuration;
             this._context = obj.context;
             this._use_checkbox = obj.use_checkbox;
-            this._onSelect = obj.onSelect || function(object, oerp_ids){};
-            this._onActivate = obj.onActivate || function(object, oerp_id, title){};
+            this.onSelect = obj.onSelect || function(object, oerp_ids){};
+            this.onActivate = obj.onActivate || function(oerp_id, title){};
             this._classNames = {checkbox: "dynatree-checkbox"};
             switch (obj.selectMode){
                 case 'single':
@@ -65,12 +65,10 @@ openerp.web_dynatree.dynatree = function (instance) {
                         return node.data.oerp_id;
                     });
                     console.log('onSelect : ' + selected_oerp_ids);
-                    self._onSelect(self._onSelectObject, 
-                            self._object, selected_oerp_ids);
+                    self.onSelect(self._object, selected_oerp_ids);
                 },
                 onActivate: function(node) {
-                    self._onActivate(self._onActivateObject, 
-                            node.data.oerp_id, node.data.title);
+                    self.onActivate(node.data.oerp_id, node.data.title);
                     // collapse the first node after choose/activate the node
                     parentList = node._parentList();
                     if (parentList[0])
@@ -90,14 +88,6 @@ openerp.web_dynatree.dynatree = function (instance) {
             this.dynatree_displayed = !(this.dynatree_displayed);
             $('#' + this.dynatree_id).css("display",
                                this.dynatree_displayed ? "block" : "none");
-        },
-        add_callback_onSelect: function(object, callback) {
-            this._onSelectObject = object;
-            this._onSelect = callback;
-        },
-        add_callback_onActivate: function(object, callback) {
-            this._onActivateObject = object;
-            this._onActivate = callback;
         },
     });
 };
