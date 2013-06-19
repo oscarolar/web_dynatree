@@ -21,12 +21,16 @@ openerp.web_dynatree.m2o_widget = function (instance) {
         render_value: function() {
             var self = this;
             if (!this.get('effective_readonly')){
-                this._dynatree = new instance.web.Dynatree(
-                      this.id_for_label,
-                      this.configuration,
-                      context=this.session.user_context,
-                      use_checkbox=false
-                      );
+                this._dynatree = new instance.web.Dynatree({
+                    dynatree_id: this.id_for_label,
+                    configuration: this.configuration,
+                    context: this.session.user_context,
+                    use_checkbox: false,
+                    onActivate: function (oerp_id, title){
+                        self.internal_set_value(oerp_id);
+                        self._display_value[oerp_id] = title;
+                        self.render_value();
+                    }});
                 this._dynatree.add_callback_onActivate(this, 
                         this.dynatree_onActivate);
             }
@@ -63,11 +67,6 @@ openerp.web_dynatree.m2o_widget = function (instance) {
                 return false;
              });
             $(".oe_form_m2o_follow", this.$el).html(follow);
-        },
-        dynatree_onActivate: function (self, oerp_id, title){
-            self.internal_set_value(oerp_id);
-            self._display_value[oerp_id] = title;
-            self.render_value();
         },
     });
 };

@@ -1,17 +1,14 @@
 openerp.web_dynatree.dynatree = function (instance) {
     instance.web.Dynatree = instance.web.Widget.extend({
-        init: function(dynatree_id, configuration, context, use_checkbox,
-                       selectMode, selected_oerp_ids) {
-            this.dynatree_id = dynatree_id;
-            this._configuration = configuration;
-            this._context = context;
-            this._use_checkbox = use_checkbox;
-            this._onSelect = function(object, oerp_ids){};
-            this._onSelectObject = null;
-            this._onActivate = function(object, oerp_id, title){};
-            this._onActivateObject = null;
+        init: function(obj){
+            this.dynatree_id = obj.dynatree_id;
+            this._configuration = obj.configuration;
+            this._context = obj.context;
+            this._use_checkbox = obj.use_checkbox;
+            this._onSelect = obj.onSelect || function(object, oerp_ids){};
+            this._onActivate = obj.onActivate || function(object, oerp_id, title){};
             this._classNames = {checkbox: "dynatree-checkbox"};
-            switch (selectMode){
+            switch (obj.selectMode){
                 case 'single':
                     this._selectMode = 1;
                     this._classNames = {checkbox: "dynatree-radio"};
@@ -33,7 +30,7 @@ openerp.web_dynatree.dynatree = function (instance) {
                 'child_field': this._configuration.child_field,
                 'checkbox_field': this._configuration.checkbox_field,
                 'use_checkbox': this._use_checkbox,
-                'selected_oerp_ids': selected_oerp_ids,
+                'selected_oerp_ids': obj.selected_oerp_ids,
                 'context': this._context,
                 }).then(function (children) {
                     self.load_dynatree(children);
