@@ -2,6 +2,7 @@
 import openerp.addons.web.http as openerpweb
 from openerp.tools.translate import _
 from openerp.tools.safe_eval import safe_eval
+from openerp.pooler import RegistryManager
 
 
 class DynatreeController(openerpweb.Controller):
@@ -85,10 +86,19 @@ class DynatreeController(openerpweb.Controller):
 
     @openerpweb.jsonrequest
     def get_children(self, request, model=None, oerp_id=None,
-                     first_node_domain=[], domain=[], child_field='child_ids', checkbox_field=None,
-                     use_checkbox=False, selected_oerp_ids=None, context=None):
+                     first_node_domain=[], domain=[], child_field='child_ids',
+                     checkbox_field=None, use_checkbox=False,
+                     selected_oerp_ids=None, context=None):
         context = request.context
         obj = request.session.model(model)
+        registry = RegistryManager.get(request.session._db)
+        if hasattr(registry.get(model), 'dynatree_get_node'):
+            return obj.dynatree_get_node(
+                model=model, oerp_id=oerp_id,
+                first_node_domain=first_node_domain, domain=domain,
+                child_field=child_field, checkbox_field=checkbox_field,
+                use_checkbox=use_checkbox, selected_oerp_ids=selected_oerp_ids)
+
         oerp_ids = self._get_oerp_ids(
             obj, oerp_id, first_node_domain, domain, child_field, context)
         return self._get_children_node(
@@ -98,17 +108,23 @@ class DynatreeController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def get_first_node(self, request, model=None, first_node_domain=[],
                        domain=[], child_field='child_ids', checkbox_field=None,
-                       use_checkbox=False, selected_oerp_ids=None, context=None):
+                       use_checkbox=False, selected_oerp_ids=None):
         context = request.context
+        obj = request.session.model(model)
+        registry = RegistryManager.get(request.session._db)
+        if hasattr(registry.get(model), 'dynatree_get_first_node'):
+            return obj.dynatree_get_first_node(
+                model=model, first_node_domain=first_node_domain,
+                domain=domain, child_field=child_field,
+                checkbox_field=checkbox_field, use_checkbox=use_checkbox,
+                selected_oerp_ids=selected_oerp_ids)
         if use_checkbox:
-            obj = request.session.model(model)
             oerp_ids = self._get_oerp_ids(
                 obj, None, first_node_domain, domain, child_field, context)
             return self._get_children_node(
                 obj, model, oerp_ids, domain, child_field, checkbox_field,
                 use_checkbox, selected_oerp_ids, context)
-        else:
-            return self._get_children_none(
-                model, first_node_domain, domain, child_field, checkbox_field)
+        return self._get_children_none(
+            model, first_node_domain, domain, child_field, checkbox_field)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
