@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_ir_actions_act_window_dynatree_tree" model="ir.ui.view">
+            <field name="name">ir.actions.act_window.dynatree.tree</field>
+            <field name="model">ir.actions.act_window.dynatree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Dynatrees setting">
+                    <field name="action_id" invisible="1"/>
+                    <field name="name"/>
+                    <field name="except_name" invisible="1"/>
+                    <field name="model_id"/>
+                    <field name="child_field_id"/>
+                    <field name="checkbox_field_id"/>
+                    <field name="search_field"/>
+                    <field name="search_operator" invisible="1"/>
+                    <field name="selectmode"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_ir_actions_act_window_dynatree_form" model="ir.ui.view">
+            <field name="name">ir.actions.act_window.dynatree.form</field>
+            <field name="model">ir.actions.act_window.dynatree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Dynatree setting" version="7.0">
+                    <label for="action_id"/>
+                    <field name="action_id"/>
+                    <group string="Name setting">
+                        <field name="name"/>
+                        <field name="except_name"/>
+                    </group>
+                    <group string="Model setting">
+                        <field name="model_id"/>
+                        <field name="child_field_id"/>
+                        <field name="checkbox_field_id"/>
+                    </group>
+                    <group string="Display setting">
+                        <field name="init_domain"/>
+                        <field name="selectmode"/>
+                        <field name="context"/>
+                        <field name="default_id"/>
+                    </group>
+                    <group string="Domain setting">
+                        <field name="search_field"/>
+                        <field name="search_operator"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_ir_actions_act_window_dynatree_search" model="ir.ui.view">
+            <field name="name">ir.actions.act_window.dynatree.search</field>
+            <field name="model">ir.actions.act_window.dynatree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="act_open_ir_actions_act_window_dynatree_view">
+            <field name="name">Dynatrees setting</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ir.actions.act_window.dynatree</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_ir_actions_act_window_dynatree_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="act_open_ir_actions_act_window_dynatree_view_form">
+            <field name="act_window_id" ref="act_open_ir_actions_act_window_dynatree_view"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_ir_actions_act_window_dynatree_form"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="act_open_ir_actions_act_window_dynatree_view_tree">
+            <field name="act_window_id" ref="act_open_ir_actions_act_window_dynatree_view"/>
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_ir_actions_act_window_dynatree_tree"/>
+        </record>
+        <menuitem id="menu_ir_actions_act_window_dynatree"
+            parent="base.next_id_2"
+            sequence="20"
+            action="act_open_ir_actions_act_window_dynatree_view"/>
+    </data>
+</openerp>
