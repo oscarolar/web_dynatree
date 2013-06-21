@@ -55,6 +55,32 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <search>
+                    <field name="action_id"/>
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('except_name', 'ilike', self)]"/>
+                    <field name="model_id"/>
+                    <field name="search_field"/>
+                    <field name="search_operator"/>
+                    <field name="child_field_id"/>
+                    <field name="checkbox_field_id"/>
+                    <field name="selectmode"/>
+                    <group string="Filter by ...">
+                        <filter string="Have except label" domain="[('except_name', '!=', '')]"/>
+                        <filter string="Operator: IN" domain="[('search_operator', '=', 'in')]"/>
+                        <filter string="Operator: Child of" domain="[('search_operator', '=', 'child_of')]"/>
+                        <filter string="Have child field" domain="[('child_field_id', '!=', False)]"/>
+                        <filter string="Have not child field" domain="[('child_field_id', '=', False)]"/>
+                        <filter string="Have checkbox field" domain="[('checkbox_field_id', '!=', False)]"/>
+                        <filter string="Have not checkbox field" domain="[('checkbox_field_id', '=', False)]"/>
+                        <filter string="SelectMode: Single" domain="[('selectmode', '=', 'single')]"/>
+                        <filter string="SelectMode: Multi" domain="[('selectmode', '=', 'multi')]"/>
+                        <filter string="SelectMode: Multi Hier" domain="[('selectmode', '=', 'multi-hier')]"/>
+                    </group>
+                    <group string="Group by ...">
+                        <filter string="Ir actions act_window" context="{'group_by': 'action_id'}"/>
+                        <filter string="Model" context="{'group_by': 'model_id'}"/>
+                        <filter string="Operator" context="{'group_by': 'search_operator'}"/>
+                        <filter string="SelectMode" context="{'group_by': 'selectmode'}"/>
+                    </group>
                 </search>
             </field>
         </record>

@@ -126,8 +126,8 @@ class IrActionsActWindow(osv.Model):
     _inherit = 'ir.actions.act_window'
 
     _columns = {
-        'dynatree_ids': fields.one2many('ir.actions.act_window.dynatree',
-                                        'action_id', 'Dynatrees'),
+        'dynatree_setting_ids': fields.one2many(
+            'ir.actions.act_window.dynatree', 'action_id', 'Dynatrees'),
         'has_search_view': fields.boolean('Has search view'),
     }
 
@@ -149,7 +149,7 @@ class IrActionsActWindowDynatree(osv.Model):
         'except_name': fields.char(
             'except label', size=64, help="If the eval of Label is wrong, "
             "The except label is display"),
-        'model_id': fields.many2one('ir.model', 'Object', required=True),
+        'model_id': fields.many2one('ir.model', 'Model', required=True),
         'search_field': fields.char(
             'field for search', size=64, required=True),
         'search_operator': fields.selection(
