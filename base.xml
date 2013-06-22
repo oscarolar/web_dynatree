@@ -13,6 +13,7 @@
                     <field name="model_id"/>
                     <field name="child_field_id"/>
                     <field name="checkbox_field_id"/>
+                    <field name="type"/>
                     <field name="search_field"/>
                     <field name="search_operator" invisible="1"/>
                     <field name="selectmode"/>
@@ -42,7 +43,8 @@
                         <field name="context"/>
                         <field name="default_id"/>
                     </group>
-                    <group string="Domain setting">
+                    <group string="Domain/Context setting">
+                        <field name="type"/>
                         <field name="search_field"/>
                         <field name="search_operator"/>
                     </group>
@@ -63,8 +65,11 @@
                     <field name="child_field_id"/>
                     <field name="checkbox_field_id"/>
                     <field name="selectmode"/>
+                    <field name="type"/>
                     <group string="Filter by ...">
                         <filter string="Have except label" domain="[('except_name', '!=', '')]"/>
+                        <filter string="Type: domain" domain="[('type', '=', 'domain')]"/>
+                        <filter string="Type: context" domain="[('type', '=', 'context')]"/>
                         <filter string="Operator: IN" domain="[('search_operator', '=', 'in')]"/>
                         <filter string="Operator: Child of" domain="[('search_operator', '=', 'child_of')]"/>
                         <filter string="Have child field" domain="[('child_field_id', '!=', False)]"/>
@@ -78,6 +83,7 @@
                     <group string="Group by ...">
                         <filter string="Ir actions act_window" context="{'group_by': 'action_id'}"/>
                         <filter string="Model" context="{'group_by': 'model_id'}"/>
+                        <filter string="Type" context="{'group_by': 'type'}"/>
                         <filter string="Operator" context="{'group_by': 'search_operator'}"/>
                         <filter string="SelectMode" context="{'group_by': 'selectmode'}"/>
                     </group>

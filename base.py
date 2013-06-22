@@ -151,6 +151,8 @@ class IrActionsActWindowDynatree(osv.Model):
             'except label', size=64, help="If the eval of Label is wrong, "
             "The except label is display"),
         'model_id': fields.many2one('ir.model', 'Model', required=True),
+        'type': fields.selection([('context', 'Context'), ('domain', 'Domain')
+                                  ], 'Type', required=True),
         'search_field': fields.char(
             'field for search', size=64, required=True),
         'search_operator': fields.selection(
@@ -177,6 +179,7 @@ class IrActionsActWindowDynatree(osv.Model):
         'selectmode': 'multi',
         'context': '{}',
         'search_operator': 'in',
+        'type': 'domain',
     }
 
     def get_search_domain_fields(self, cr, uid, ids, context=None):

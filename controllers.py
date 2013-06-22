@@ -136,7 +136,17 @@ class TreeDynatree(openerpweb.Controller):
         registry = RegistryManager.get(request.session._db)
         if hasattr(registry.get(obj.model), 'tree_dynatree_get_context'):
             return obj.tree_dynatree_get_context(dynatrees, context=context)
-        return context
+        if context is None:
+            context = {}
+
+        ctx = context.copy()
+        dynatree = request.session.model('ir.actions.act_window.dynatree')
+        for d in dynatree.read(dynatrees.keys(),
+                               ['type', 'search_field'],
+                               context=context):
+            if d['type'] == 'context':
+                ctx.update({d['search_field']: dynatrees[d['id']]})
+        return ctx
 
     def get_domain(self, request, obj, domain, dynatrees, context=None):
         if domain is None:
@@ -147,10 +157,11 @@ class TreeDynatree(openerpweb.Controller):
                 domain, dynatrees, context=context)
         dynatree = request.session.model('ir.actions.act_window.dynatree')
         for d in dynatree.read(dynatrees.keys(),
-                               ['search_field', 'search_operator'],
+                               ['type', 'search_field', 'search_operator'],
                                context=context):
-            domain.append(
-                (d['search_field'], d['search_operator'], dynatrees[d['id']]))
+            if d['type'] == 'domain':
+                domain.append((d['search_field'], d['search_operator'],
+                               dynatrees[d['id']]))
         return domain
 
     @openerpweb.jsonrequest
