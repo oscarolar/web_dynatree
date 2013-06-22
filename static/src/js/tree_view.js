@@ -159,7 +159,7 @@ openerp.web_dynatree.tree_view = function(instance){
                 dynatreeconf = new instance.web.Model('ir.actions.act_window.dynatree');
                 dynatreeconf.call('get_dynatrees', 
                         [this.options.action.dynatree_setting_ids],
-                        {context: this.context}).then(function (dynatrees) {
+                        {context: this.dataset.context}).then(function (dynatrees) {
                     _(dynatrees).each( function (dynatree) {
                         self._dynatrees[dynatree.id] = [];
                         var d = QWeb.render('TreeViewDynatree.Dynatree', 
