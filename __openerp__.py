@@ -8,6 +8,7 @@
         'web',
     ],
     'update_xml': [
+        'security/ir.model.access.csv',
         'base.xml',
     ],
     'js': [
@@ -17,6 +18,7 @@
         'static/src/js/dynatree.js',
         'static/src/js/m2o_widget.js',
         'static/src/js/m2m_widget.js',
+        'static/src/js/tree_view.js',
     ],
     'css': [
         'static/lib/css/*.css',

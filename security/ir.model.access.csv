@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_ir_actions_act_window_dynatree,access_ir_actions_act_window_dynatree,web_dynatree.model_ir_actions_act_window_dynatree,,1,0,0,0
+access_ir_actions_act_window,access_ir_actions_act_window,base.model_ir_actions_act_window,,1,0,0,0
+access_ir_model_fields,access_ir_model_fields,base.model_ir_model_fields,,1,0,0,0
+access_ir_model,access_ir_model,base.model_ir_model,,1,0,0,0

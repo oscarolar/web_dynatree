@@ -59,12 +59,19 @@ openerp.web_dynatree.dynatree = function (instance) {
                             node.addChild(children);
                     });
                 },
+                onCreate: function(node, nodeSpan){
+                    var selectedNodes = node.tree.getSelectedNodes();
+                    var selected_oerp_ids = $.map(selectedNodes, function(node){
+                        return node.data.oerp_id;
+                    });
+                    if (selected_oerp_ids.length)
+                        self.onSelect(selected_oerp_ids);
+                },
                 onSelect: function(flag, node){
                     var selectedNodes = node.tree.getSelectedNodes();
                     var selected_oerp_ids = $.map(selectedNodes, function(node){
                         return node.data.oerp_id;
                     });
-                    console.log('onSelect : ' + selected_oerp_ids);
                     self.onSelect(selected_oerp_ids);
                 },
                 onActivate: function(node) {

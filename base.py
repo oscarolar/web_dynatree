@@ -6,6 +6,7 @@ from openerp.tools.translate import _
 from openerp.addons.base.ir.ir_actions import VIEW_TYPES
 from lxml import etree
 from logging import getLogger
+from openerp import SUPERUSER_ID
 
 
 _logger = getLogger(__name__)
@@ -178,7 +179,11 @@ class IrActionsActWindowDynatree(osv.Model):
         'search_operator': 'in',
     }
 
-    def get_dynatrees_conf(self, cr, uid, ids, context=None):
+    def get_search_domain_fields(self, cr, uid, ids, context=None):
+        return self.read(cr, SUPERUSER_ID, ids,
+                         ['search_field', 'search_operator'], context=context)
+
+    def get_dynatrees(self, cr, uid, ids, context=None):
         res = []
         user = self.pool.get('res.users').browse(
             cr, uid, uid, context=context)

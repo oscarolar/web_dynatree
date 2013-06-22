@@ -127,4 +127,57 @@ class DynatreeController(openerpweb.Controller):
         return self._get_children_none(
             model, first_node_domain, domain, child_field, checkbox_field)
 
+
+class TreeDynatree(openerpweb.Controller):
+
+    _cp_path = '/web/dynatree/tree'
+
+    def get_context(self, request, obj, dynatrees, context=None):
+        registry = RegistryManager.get(request.session._db)
+        if hasattr(registry.get(obj.model), 'tree_dynatree_get_context'):
+            return obj.tree_dynatree_get_context(dynatrees, context=context)
+        return context
+
+    def get_domain(self, request, obj, domain, dynatrees, context=None):
+        if domain is None:
+            domain = []
+        registry = RegistryManager.get(request.session._db)
+        if hasattr(registry.get(obj.model), 'tree_dynatree_get_domain'):
+            return obj.tree_dynatree_get_domain(
+                domain, dynatrees, context=context)
+        dynatree = request.session.model('ir.actions.act_window.dynatree')
+        for d in dynatree.read(dynatrees.keys(),
+                               ['search_field', 'search_operator'],
+                               context=context):
+            domain.append(
+                (d['search_field'], d['search_operator'], dynatrees[d['id']]))
+        return domain
+
+    @openerpweb.jsonrequest
+    def get_rows(self, request, model=None, parent_id=None, fields=None,
+                 child_field=None, domain=None, dynatrees=None):
+        obj = request.session.model(model)
+
+        for k, v in dynatrees.items():
+            # k is str or ID is numeric
+            del dynatrees[k]
+            dynatrees[int(k)] = v
+
+        context = self.get_context(request, obj, dynatrees, request.context)
+        registry = RegistryManager.get(request.session._db)
+        if hasattr(registry.get(model), 'tree_dynatree_get_rows'):
+            return obj.tree_dynatree_get_rows(
+                parent_id=parent_id, fields=fields, child_field=child_field,
+                domain=domain, dynatrees=dynatrees, context=context)
+
+        if parent_id:
+            child_ids = obj.read(
+                parent_id, [child_field], context=context)[child_field]
+        else:
+            domain = self.get_domain(
+                request, obj, domain, dynatrees, context=context)
+            child_ids = obj.search(domain, context=context)
+
+        return obj.read(child_ids, fields + [child_field], context=context)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
