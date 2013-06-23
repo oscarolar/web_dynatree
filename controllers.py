@@ -88,7 +88,7 @@ class DynatreeController(openerpweb.Controller):
     def get_children(self, request, model=None, oerp_id=None,
                      first_node_domain=[], domain=[], child_field='child_ids',
                      checkbox_field=None, use_checkbox=False,
-                     selected_oerp_ids=None, context=None):
+                     selected_oerp_ids=None):
         context = request.context
         obj = request.session.model(model)
         registry = RegistryManager.get(request.session._db)
@@ -97,7 +97,8 @@ class DynatreeController(openerpweb.Controller):
                 model=model, oerp_id=oerp_id,
                 first_node_domain=first_node_domain, domain=domain,
                 child_field=child_field, checkbox_field=checkbox_field,
-                use_checkbox=use_checkbox, selected_oerp_ids=selected_oerp_ids)
+                use_checkbox=use_checkbox, selected_oerp_ids=selected_oerp_ids,
+                context=context)
 
         oerp_ids = self._get_oerp_ids(
             obj, oerp_id, first_node_domain, domain, child_field, context)
@@ -117,7 +118,7 @@ class DynatreeController(openerpweb.Controller):
                 model=model, first_node_domain=first_node_domain,
                 domain=domain, child_field=child_field,
                 checkbox_field=checkbox_field, use_checkbox=use_checkbox,
-                selected_oerp_ids=selected_oerp_ids)
+                selected_oerp_ids=selected_oerp_ids, context=context)
         if use_checkbox:
             oerp_ids = self._get_oerp_ids(
                 obj, None, first_node_domain, domain, child_field, context)

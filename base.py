@@ -190,12 +190,11 @@ class IrActionsActWindowDynatree(osv.Model):
         res = []
         user = self.pool.get('res.users').browse(
             cr, uid, uid, context=context)
-        local = {'context': context, 'user': user}
         if context is None:
-            ctx = {}
-        else:
-            ctx = context.copy()
+            context = {}
         for this in self.browse(cr, uid, ids, context=context):
+            ctx = context.copy()
+            local = {'context': ctx, 'user': user}
             name = ''
             init_domain = []
             try:
