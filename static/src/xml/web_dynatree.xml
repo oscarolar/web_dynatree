@@ -43,7 +43,7 @@
         <t t-foreach="header[level]" t-as="field">
             <th t-if="field.tag == 'field' and !field.attrs.modifiers.invisible"
                 t-att-rowspan="max_depth"
-                class="treeview-header">
+                class="treeview-header oe_treeview-multiheader-field">
                 <t t-esc="field.attrs.string || fields[field.attrs.name].string" />
             </th>
             <th t-if="field.tag == 'group'"
