@@ -33,3 +33,22 @@ margin: 1px 4px;
 padding: 0;
 border: 1px solid #999;
 }
+
+label.oe_dynatree_label {
+    padding: 5px; 
+    text-decoration:underline;
+}
+div.oe_dynatree_label {
+    text-align: center;
+    width: inherit;
+}
+div.oe_dynatree.oe_tree_dynatree{
+  position: static;
+}
+th.treeview-header.oe_treeview-multiheader-group {
+    text-align: center;
+    font-size: 10px;
+}
+th.treeview-header.oe_treeview-multiheader-field {
+    font-size: 10px;
+}
