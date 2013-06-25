@@ -144,12 +144,10 @@ class IrActionsActWindowDynatree(osv.Model):
     _columns = {
         'action_id': fields.many2one('ir.actions.act_window', 'Action',
                                      required=True),
-        'name': fields.char(
-            'Label', size=64, help="Label is evaluate, you can use context "
-            "and user local"),
-        'except_name': fields.char(
-            'except label', size=64, help="If the eval of Label is wrong, "
-            "The except label is display"),
+        'eval_name': fields.boolean(
+            'Eval Label', help="If check, the name is evaluated with 'context'"
+            " and 'user'"),
+        'name': fields.char('Label', size=64),
         'model_id': fields.many2one('ir.model', 'Model', required=True),
         'type': fields.selection([('context', 'Context'), ('domain', 'Domain')
                                   ], 'Type', required=True),
@@ -171,7 +169,8 @@ class IrActionsActWindowDynatree(osv.Model):
         'default_id': fields.char(
             'Default ID', size=12, help="Default ID is evaluate, you can use "
             "context and user local"),
-
+        'active': fields.boolean(
+            'Active', help='if check, this object is always available'),
     }
 
     _defaults = {
@@ -180,6 +179,8 @@ class IrActionsActWindowDynatree(osv.Model):
         'context': '{}',
         'search_operator': 'in',
         'type': 'domain',
+        'eval_name': False,
+        'active': True,
     }
 
     def get_search_domain_fields(self, cr, uid, ids, context=None):
@@ -195,33 +196,21 @@ class IrActionsActWindowDynatree(osv.Model):
         for this in self.browse(cr, uid, ids, context=context):
             ctx = context.copy()
             local = {'context': ctx, 'user': user}
-            name = ''
-            init_domain = []
-            try:
-                name = safe_eval(this.name, local)
-            except NameError:
-                name = this.name
-            except SyntaxError:
-                name = this.name
-            except TypeError:
-                name = this.except_name
-            except AttributeError:
-                name = this.except_name
-            if this.init_domain:
-                try:
-                    init_domain = safe_eval(this.init_domain, local)
-                except:
-                    init_domain = [('id', '=', 0)]
-
-            default_id = 0
-            if this.default_id:
-                try:
-                    default_id = safe_eval(this.default_id, local)
-                except:
-                    pass
             dctx = safe_eval(this.context, local)
             if dctx:
                 ctx.update(dctx)
+
+            name = this.name
+            if this.eval_name:
+                name = safe_eval(this.name, local)
+
+            init_domain = []
+            init_domain = safe_eval(this.init_domain, local)
+
+            default_id = 0
+            if this.default_id:
+                default_id = safe_eval(this.default_id, local)
+
             dynatree = {
                 'id': this.id,
                 'name': name or this.model_id.name,

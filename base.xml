@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <tree string="Dynatrees setting">
                     <field name="action_id" invisible="1"/>
+                    <field name="eval_name" invisible="1"/>
                     <field name="name"/>
-                    <field name="except_name" invisible="1"/>
                     <field name="model_id"/>
                     <field name="child_field_id"/>
                     <field name="checkbox_field_id"/>
@@ -30,7 +30,7 @@
                     <field name="action_id"/>
                     <group string="Name setting">
                         <field name="name"/>
-                        <field name="except_name"/>
+                        <field name="eval_name"/>
                     </group>
                     <group string="Model setting">
                         <field name="model_id"/>
@@ -58,7 +58,8 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="action_id"/>
-                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('except_name', 'ilike', self)]"/>
+                    <field name="name"/>
+                    <field name="eval_name"/>
                     <field name="model_id"/>
                     <field name="search_field"/>
                     <field name="search_operator"/>
@@ -67,7 +68,8 @@
                     <field name="selectmode"/>
                     <field name="type"/>
                     <group string="Filter by ...">
-                        <filter string="Have except label" domain="[('except_name', '!=', '')]"/>
+                        <filter string="Name is evaluated" domain="[('eval_name', '=', True)]"/>
+                        <filter string="Name is not evaluated" domain="[('eval_name', '=', False)]"/>
                         <filter string="Type: domain" domain="[('type', '=', 'domain')]"/>
                         <filter string="Type: context" domain="[('type', '=', 'context')]"/>
                         <filter string="Operator: IN" domain="[('search_operator', '=', 'in')]"/>
@@ -81,6 +83,7 @@
                         <filter string="SelectMode: Multi Hier" domain="[('selectmode', '=', 'multi-hier')]"/>
                     </group>
                     <group string="Group by ...">
+                        <filter string="Evaluate / not evaluate" context="{'group_by': 'eval_name'}"/>
                         <filter string="Ir actions act_window" context="{'group_by': 'action_id'}"/>
                         <filter string="Model" context="{'group_by': 'model_id'}"/>
                         <filter string="Type" context="{'group_by': 'type'}"/>
