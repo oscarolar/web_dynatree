@@ -17,13 +17,14 @@ But this module has never been tested in 7.0 yet.
 Widget: ``m2o_dynatree``
 ------------------------
 
-It is a many2one widget for arborescent model. the application is easy:
+It is a many2one widget for arborescent model. the application is easy::
 
-.. figure:: images/code1.png
-    :align: center
+    <field name="categ_id" widget="m2o_dynatree" 
+           first_node_domain="[('parent_id', '=', False)]"
+           child_field="child_id"/>
 
-    In not editable, the widget m2o_dynatree, like classic many2one is a link 
-    to model form view
+In not editable, the widget m2o_dynatree, like classic many2one is a link 
+to model form view
 
 The setting options are:
 
@@ -71,21 +72,71 @@ simple selector by dynatrees.
 
     The compute of the line depend of the dynatree's selected nodes
 
-.. figure:: images/tree_dynatree3.png
-    :align: center
+The setting of the ir.actions.act_window is the same, just use tree_dynatree::
 
-    The setting of the ir.actions.act_window is the same, just use 
-    tree_dynatree
+    <openerp>
+        <data>
+            <record id="view_account_analytic_account_dynatree_tree" 
+                    model="ir.ui.view">
+                <field name="name">account.analytic.account.tree</field>
+                <field name="model">account.analytic.account</field>
+                <field name="field_parent">child_complete_ids</field>
+                <field name="arch" type="xml">
+                    <tree_dynatree version="7.0" string="Analytic account">
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="debit"/>
+                        <field name="credit"/>
+                        <field name="balance"/>
+                        <field name="type"/>
+                    </tree_dynatree>
+                </field>
+            </record>
+            <record id="action_account_analytic_account_dynatree"
+                model="ir.actions.act_window">
+                <field name="name">Analytic account chart</field>
+                <field name="res_model">account.analytic.account</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="view_type">tree</field>
+                <field name="view_mode">tree_dynatree</field>
+                <field name="domain">[('parent_id.parent_id', '=', False)]</field>
+                <field name="view_id"
+                    ref="view_account_analytic_account_dynatree_tree"/>
+            </record>
+            <menuitem id="menu_account_analytic_account_dynatree" 
+                parent="menu_under_budget"
+                sequence="20"
+                action="action_account_analytic_account_dynatree"/>
+            <record model="ir.actions.act_window.dynatree" 
+                    id="analytic_account_dynatree">
+                <field name="action_id" 
+                    ref="action_account_analytic_account_dynatree"/>
+                <field name="name">General account</field>
+                <field name="model_id" ref="account.model_account_account"/>
+                <field name="child_field_id" 
+                    ref="account.field_account_account_child_parent_ids"/>
+                <field name="init_domain">[('parent_id.code', '=', '0')]</field>
+                <field name="domain">[]</field>
+                <field name="search_field">general_account_id</field>
+                <field name="type">context</field>
+            </record>
+            <record model="ir.actions.act_window.dynatree" 
+                    id="analytic_account_dynatree_2">
+                <field name="action_id" 
+                    ref="action_account_analytic_account_dynatree"/>
+                <field name="name">Budget</field>
+                <field name="model_id"
+                    ref="account.model_account_fiscalyear"/>
+                <field name="context">{}</field>
+                <field name="selectmode">single</field>
+                <field name="search_field">budget_id</field>
+                <field name="type">context</field>
+            </record>
+        </data>
+    </openerp>
 
-.. figure:: images/tree_dynatree4.png
-    :align: center
+.. warning:: The setting of the view is classic, Don't forgive the version="7.0"
 
-    The setting of the view is classic, Don't forgive the version="7.0"
-
-.. figure:: images/tree_dynatree5.png
-    :align: center
-
-    The model of dynatree setting is ``ir.actions.act_window.dynatree``
 
 .. figure:: images/tree_dynatree6.png
     :align: center
@@ -97,11 +148,20 @@ simple selector by dynatrees.
 
     Like list_multiheader, we use group node for multi header
 
-.. figure:: images/tree_dynatree8.png
-    :align: center
+The tree_dynatree is also multiheader::
 
-    The tree_dynatree is multiheader
-
+    <tree_dynatree string="Budget entries by account"  version="7.0">
+        <field name="code"/>
+        <field name="name"/>
+        <group string="Budget 1">
+            <field name="debit_1"/>
+            <field name="credit_1"/>
+        </group>
+        <group string="Budget 2">
+            <field name="debit_2"/>
+            <field name="credit_2"/>
+        </group>
+    </tree_dynatree>
 
 The dynatree setting can also be added by OpenERP client
 
@@ -145,15 +205,53 @@ the budget ``analytic.budget`` is linked on a period
     The first node are the périod and the second the budget, period and buget 
     are not arborescent
 
-.. figure:: images/tree_dynatree11.png
-    :align: center
+We use a hook method to return all the node, without leazy mode::
 
-    The setting of the dynatree are the same then genral account dynatree
+    def dynatree_get_first_node(self, cr, uid, context=None,
+                                first_node_domain=None, *args, **kwargs):
+        budget_obj = self.pool.get('analytic.budget')
+        if isinstance(first_node_domain, str):
+            first_node_domain = safe_eval(first_node_domain)
+        res = []
+        ids = self.search(cr, uid, first_node_domain, context=context)
+        for id, name in self.name_get(cr, uid, ids, context=context):
+            domain = [('period_id', '=', id)]
+            budget_ids = budget_obj.search(cr, uid, domain, context=context)
+            if not budget_ids:
+                continue
+            val = {
+                'title': name,
+                'oerp_model': self._name,
+                'oerp_id': id,
+                'isFolder': True,
+                'isLazy': True,
+                'hideCheckbox': True,
+                'select': False,
+                'oerp_domain': domain,
+                'oerp_child_field': '',
+                'oerp_checkbox_field': None,
+                'children': [],
+            }
+            for bid, bname in budget_obj.name_get(cr, uid, budget_ids,
+                                                  context=context):
+                val['children'].append({
+                    'title': bname,
+                    'oerp_model': 'analytic.budget',
+                    'oerp_id': bid,
+                    'isFolder': False,
+                    'isLazy': False,
+                    'hideCheckbox': False,
+                    'select': False,
+                    'oerp_domain': [],
+                    'oerp_child_field': '',
+                    'oerp_checkbox_field': None,
+                })
 
-.. figure:: images/tree_dynatree12.png
-    :align: center
+            res.append(val)
 
-    We use a hook method to return all the node, without leazy mode.
+        if len(res) == 1 and len(res[0]['children']) == 1:
+            res[0]['children'][0]['select'] = True
+        return res
 
 The existing hook method are:
 
