@@ -1,18 +1,31 @@
 Integration of jquery.dynatree into OpenERP web
 ===============================================
 
-This addon defines a new search field based on `jquery.dynatree
-<http://wwwendt.de/tech/dynatree/index.html>`_ for arborescent
-structures such as product and partner categories.
-
 .. image:: raw/default/images/icon.png
     :align: center
 
 This project is at an early stage, feel free to contribute, and keep
 posted ! See the included ``TODO.txt`` to see what's in the pipe.
 
-The controller can be loaded in 6.1 and 7.0 version of openerp.
-But this module has never been tested in 7.0 yet.
+Branch: 6.1
+~~~~~~~~~~~
+
+This addon defines a new search field based on `jquery.dynatree
+<http://wwwendt.de/tech/dynatree/index.html>`_ for arborescent
+structures such as product and partner categories.
+
+The controller can be loaded in 6.1 version of openerp.
+
+Branch: 7.0
+~~~~~~~~~~~
+
+This addon defines:
+
+* Many2one widget
+* View
+
+Bases on `jquery.dynatree <http://wwwendt.de/tech/dynatree/index.html>`_ for
+arborescent structure.
 
 Widget: ``m2o_dynatree``
 ------------------------
@@ -58,8 +71,8 @@ The setting options are:
 View: ``tree_dynatree``
 -----------------------
 
-Like the view_mode tree in view type tree, the view tree_dynatree replace the
-simple selector by dynatrees.
+The view ``tree_dynatree`` replace the simple selector by dynatrees of the 
+classic ``tree`` view
 
 .. figure:: raw/default/images/tree_dynatree1.png
     :align: center
@@ -72,7 +85,8 @@ simple selector by dynatrees.
 
     The compute of the line depend of the dynatree's selected nodes
 
-The setting of the ir.actions.act_window is the same, just use tree_dynatree::
+The setting of the ``ir.actions.act_window`` is the same, just use 
+tree_dynatree::
 
     <openerp>
         <data>
@@ -135,18 +149,14 @@ The setting of the ir.actions.act_window is the same, just use tree_dynatree::
         </data>
     </openerp>
 
-.. warning:: The setting of the view is classic, Don't forgive the version="7.0"
-
+.. warning:: The setting of the view is classic, Don't forgive the 
+    ``version="7.0"``
 
 .. figure:: raw/default/images/tree_dynatree6.png
     :align: center
 
-    Here it is the general account with analytic accont in dynatree
+    Here it is the general account with analytic account in dynatree
 
-.. figure:: raw/default/images/tree_dynatree7.png
-    :align: center
-
-    Like list_multiheader, we use group node for multi header
 
 The tree_dynatree is also multiheader::
 
@@ -162,6 +172,12 @@ The tree_dynatree is also multiheader::
             <field name="credit_2"/>
         </group>
     </tree_dynatree>
+
+.. figure:: raw/default/images/tree_dynatree7.png
+    :align: center
+
+    Like list_multiheader, we use ``group`` node for multi header
+
 
 The dynatree setting can also be added by OpenERP client
 
