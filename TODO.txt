@@ -1,10 +1,12 @@
 Acknowledged room for improvements
 ----------------------------------
 
-- Add widget Dynatree
+- Add m2o_dynatree widget for tree view
 
-- Add m2o_dynatree widget for form/tree view
+- Add m2m_dynatree widget form form/tree view (in progress)
 
-- Add m2m_dynatree widget form form/tree view
+- Controller unittest
 
-- Add tree_dynatree_view  existing in poc version in mlf
+- Javascript unittest
+
+- OpenERP Model unittest
