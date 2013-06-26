@@ -4,87 +4,90 @@ Integration of jquery.dynatree into OpenERP web
 .. image:: raw/default/images/icon.png
     :align: center
 
+This addon provides new UI componants based on
+`jquery.dynatree <http://wwwendt.de/tech/dynatree/index.html>`_ for
+arborescent structures, such as product and partner categories.
+
 This project is at an early stage, feel free to contribute, and keep
 posted ! See the included ``TODO.txt`` to see what's in the pipe.
 
 Branch: 6.1
 ~~~~~~~~~~~
 
-This addon defines a new search field based on `jquery.dynatree
-<http://wwwendt.de/tech/dynatree/index.html>`_ for arborescent
-structures such as product and partner categories.
-
-The controller can be loaded in 6.1 version of openerp.
+For OpenERP 6.1 this branch provides a new search field 
 
 Branch: 7.0
 ~~~~~~~~~~~
 
-This addon defines:
+For OpenERP 7.0 this branch provides:
 
-* Many2one widget
-* View
+* A many2one widget ``m2o_dynatree`` for ``form`` views
+* A view ``tree_dynatree`` that enhances the foldable ``tree`` views with 
+  dynatree selectors
 
-Bases on `jquery.dynatree <http://wwwendt.de/tech/dynatree/index.html>`_ for
-arborescent structure.
 
 Widget: ``m2o_dynatree``
 ------------------------
 
-It is a many2one widget for arborescent model. the application is easy::
+It is a many2one widget for  many2one fields targetting arborescent models. 
+Using it is fairly easy::
 
     <field name="categ_id" widget="m2o_dynatree" 
            first_node_domain="[('parent_id', '=', False)]"
            child_field="child_id"/>
 
 
-The setting options are:
+The available options are:
 
-* domain: to filter all the line
-* first_node_domain: Only to apply a filter on the first node, not use after
-* child_field: like tree view, we need to know the child field of the model,
-  by default it is ``child_ids``
+* All usual options for the standard many2one like ``domain`` and ``context``
+* ``first_node_domain``: Used to select the roots of the dynatree
+* ``child_field``: like the ``tree`` view, we need to know the child field 
+  of the target model, by default it is ``child_ids``
 
 .. figure:: raw/default/images/m2o_dynatree1.png
     :align: center
 
-    In not editable node, the widget m2o_dynatree, like classic many2one is a 
-    link to model form view
+    In readonly mode, the widget m2o_dynatree, like the classic many2one,
+    is a link to ``form`` view
 
 .. figure:: raw/default/images/m2o_dynatree2.png
     :align: center
 
-    In editable mode, the tree cursor is shown.
+    In editable mode, the dynatree unfolding handle gets displayed
 
 .. figure:: raw/default/images/m2o_dynatree3.png
     :align: center
 
-    Click on the cursor to open tree
+    Click on the triangular handle to unfold
 
 .. figure:: raw/default/images/m2o_dynatree4.png
     :align: center
 
-    When you select a node, the tree is closed and the new value are selected.
+    As you select a node, the tree is folded and the new value are selected.
 
 
 View: ``tree_dynatree``
 -----------------------
 
-The view ``tree_dynatree`` replace the simple selector by dynatrees of the 
-classic ``tree`` view
+The ``tree_dynatree`` view replaces the simple ``select`` html of the 
+classic ``tree`` view by one or several dynatree selectors
 
 .. figure:: raw/default/images/tree_dynatree1.png
     :align: center
 
-    The analytic plan chart has not a selector on a analytic account but a 
-    dynatree on a general account and a dynatree on a budget
+    The analytic plan chart's ``select`` which normally on 
+    ``analytic account``, has been replaced by two dynatree selectors: the 
+    first on general account and the second on the budget
 
 .. figure:: raw/default/images/tree_dynatree2.png
     :align: center
 
-    The compute of the line depend of the dynatree's selected nodes
+    The bottom half of the screen sums up only those analytic lines that match 
+    the dynatree selectors from the upper half.
 
-The setting of the ``ir.actions.act_window`` is the same, just use 
-tree_dynatree::
+The definition of the ``ir.actions.act_window`` is similar to the usual one,
+just use ``tree_dynatree`` instead of ``tree`` in a few places, then add the 
+definitions of the dynatree selectors::
 
     <openerp>
         <data>
@@ -115,10 +118,8 @@ tree_dynatree::
                 <field name="view_id"
                     ref="view_account_analytic_account_dynatree_tree"/>
             </record>
-            <menuitem id="menu_account_analytic_account_dynatree" 
-                parent="menu_under_budget"
-                sequence="20"
-                action="action_account_analytic_account_dynatree"/>
+
+            <!-- Dynatree selectors -->
             <record model="ir.actions.act_window.dynatree" 
                     id="analytic_account_dynatree">
                 <field name="action_id" 
@@ -147,16 +148,16 @@ tree_dynatree::
         </data>
     </openerp>
 
-.. warning:: The setting of the view is classic, Don't forgive the 
-    ``version="7.0"``
+.. warning::  Don't forget to put ``version="7.0"``, otherwise the RelaxNG 
+    for pre v7 views will refuse this definition.
 
 .. figure:: raw/default/images/tree_dynatree6.png
     :align: center
 
-    Here it is the general account with analytic account in dynatree
+    General account folding view with analytic account dynatree selection.
 
 
-The tree_dynatree is also multiheader::
+The ``tree_dynatree`` view also has a multiheader capability::
 
     <tree_dynatree string="Budget entries by account"  version="7.0">
         <field name="code"/>
@@ -174,15 +175,17 @@ The tree_dynatree is also multiheader::
 .. figure:: raw/default/images/tree_dynatree7.png
     :align: center
 
-    Like list_multiheader, we use ``group`` node for multi header
+    Like in the 
+    `list_multiheader addon <https://bitbucket.org/anybox/list_multiheader>`_, 
+    we use ``group`` node to express the grouping of headers.
 
 
-The dynatree setting can also be added by OpenERP client
+The dynatree configurations can also be managed by OpenERP client
 
 .. figure:: raw/default/images/setting_dynatree1.png
     :align: center
 
-    A new menu are added
+    Dynatree configuration menu
 
 .. figure:: raw/default/images/setting_dynatree2.png
     :align: center
@@ -200,13 +203,15 @@ The dynatree setting can also be added by OpenERP client
 .. figure:: raw/default/images/setting_dynatree4.png
     :align: center
 
-    A one2many to dynatrees are added on ``ir.actions.act_window`` model.
+    There is a one2many pointing to dynatrees  on the 
+    ``ir.actions.act_window`` model.
 
 .. warning:: The capability to add ``search`` view but not tested
 
 
-A hook method can be added on the model to make a specif action. For exemple 
-the budget ``analytic.budget`` is linked on a period
+Some hook methods can be defined on the target model for advanced tuning.
+The screenshots of the two views above illustrate one of them, meant to use a
+virtual arborescent structure (periods and budgets):
 
 .. figure:: raw/default/images/tree_dynatree9.png
     :align: center
@@ -216,10 +221,11 @@ the budget ``analytic.budget`` is linked on a period
 .. figure:: raw/default/images/tree_dynatree10.png
     :align: center
 
-    The first node are the périod and the second the budget, period and buget 
-    are not arborescent
+    The first nodes are the periods and the second ones the budgets, although 
+    period and buget are not part of a common arborescent model.
 
-We use a hook method to return all the node, without leazy mode::
+To get this result, we used a hook method returning all the dynatree nodes 
+at once::
 
     def dynatree_get_first_node(self, cr, uid, context=None,
                                 first_node_domain=None, *args, **kwargs):
@@ -267,10 +273,11 @@ We use a hook method to return all the node, without leazy mode::
             res[0]['children'][0]['select'] = True
         return res
 
-The existing hook method are:
+The existing hook methods are:
 
-* tree_dyntaree_get_context: to define a specific context in function of 
+* ``tree_dynatree_get_context``: to pass a specific context that will be used 
+  while searching and reading the results
+* ``tree_dynatree_get_domain``: to define a specific domain in function of 
   dynatree
-* tree_dyntaree_get_domain: to define a specific domain in function od dynatree
-* tree_dynatree_get_rows: to return the model line of the actions, it is a 
-  read by default
+* ``tree_dynatree_get_rows``: must return the lines to display in the main 
+  part of the view (defaults to a simple read)
