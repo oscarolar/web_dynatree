@@ -33,7 +33,7 @@ The setting options are:
 * child_field: like tree view, we need to know the child field of the model,
   by default it is ``child_ids``
 
-.. figure:: images/m2o_dynatree1.png
+.. figure:: raw/default/images/m2o_dynatree1.png
     :align: center
 
     In not editable node, the widget m2o_dynatree, like classic many2one is a 
