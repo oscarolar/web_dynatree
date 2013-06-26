@@ -11,6 +11,9 @@ structures such as product and partner categories.
 This project is at an early stage, feel free to contribute, and keep
 posted ! See the included ``TODO.txt`` to see what's in the pipe.
 
+The controller can be loaded in 6.1 and 7.0 version of openerp.
+But this module has never been tested in 7.0 yet.
+
 Widget: ``m2o_dynatree``
 ------------------------
 
