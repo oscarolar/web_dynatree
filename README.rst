@@ -36,8 +36,6 @@ It is a many2one widget for arborescent model. the application is easy::
            first_node_domain="[('parent_id', '=', False)]"
            child_field="child_id"/>
 
-In not editable, the widget m2o_dynatree, like classic many2one is a link 
-to model form view
 
 The setting options are:
 
