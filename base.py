@@ -171,7 +171,11 @@ class IrActionsActWindowDynatree(osv.Model):
             "context and user local"),
         'active': fields.boolean(
             'Active', help='if check, this object is always available'),
+        'sequence': fields.integer('Sequence',
+                                   help='To control display ordering')
     }
+
+    _order = 'sequence'
 
     _defaults = {
         'init_domain': lambda *a: '[]',
