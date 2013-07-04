@@ -127,7 +127,7 @@
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/notebook/page/group[@string='Views']" position="after">
-                    <group string="Dynatrees setting">
+                    <group string="Dynatree settings">
                         <field name="has_search_view"/>
                         <field name="dynatree_setting_ids" colspan="4" nolabel="1" 
                             context="{'default_action_id': active_id}"/>
