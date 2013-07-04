@@ -185,6 +185,7 @@ class IrActionsActWindowDynatree(osv.Model):
         'type': 'domain',
         'eval_name': False,
         'active': True,
+        'sequence': 0,
     }
 
     def get_search_domain_fields(self, cr, uid, ids, context=None):
