@@ -10,7 +10,7 @@ from openerp import SUPERUSER_ID
 
 
 _logger = getLogger(__name__)
-VIEW_TYPE = ('tree_dynatrees', _('Tree with dynatrees'))
+VIEW_TYPE = ('tree_dynatree', _('Tree with dynatrees'))
 VIEW_TYPES.append(VIEW_TYPE)
 
 
