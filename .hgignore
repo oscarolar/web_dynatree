@@ -1,16 +1,5 @@
 syntax: glob
-addons-*/
-extra-6.0/
-aeroolib/
 
-etc/
-bin/
-dist
-eggs
-parts
-var/
-develop-eggs
-docs/_build/
 .installed.cfg
 *.egg-info
 *.swp
@@ -20,6 +9,4 @@ docs/_build/
 *\#
 *.\#*
 *~
-
-
 
