@@ -78,6 +78,9 @@ def valid_type_tree_dynatrees(arch, fromgroup=True):
         elif node.tag == 'button':
             if not valid_node_button(node):
                 res = False
+        elif node.tag == etree.Comment:
+            # It is a comment
+            pass
         else:
             _logger.error(
                 'the tag %r are not allow in the xml arch' % node.tag)
