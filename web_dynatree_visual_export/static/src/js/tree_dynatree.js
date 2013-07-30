@@ -1,4 +1,4 @@
-openerp.web_dynatree_global_export = function (instance) {
+openerp.web_dynatree_visual_export = function (instance) {
 
     var _t = instance.web._t;
     var QWeb = instance.web.qweb;
