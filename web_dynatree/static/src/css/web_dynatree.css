@@ -10,7 +10,7 @@ div.oe_dynatree {
     top: 0;
     background: #FFF;
 }
-.openerp .oe_form .oe_form_field_with_button > div {
+div.oe_dynatree_wrapper {
     overflow: visible;
     z-index: 100;
 }
