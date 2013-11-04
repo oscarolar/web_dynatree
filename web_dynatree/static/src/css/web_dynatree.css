@@ -39,3 +39,24 @@ ul.dynatree-container li ul {
 span.dynatree-icon {
     display: none;
 }
+label.oe_dynatree_label {
+    padding: 5px;
+    text-decoration:underline;
+}
+div.oe_dynatree_label {
+    text-align: center;
+    width: inherit;
+}
+div.oe_dynatree.oe_tree_dynatree{
+  position: static;
+}
+th.treeview-header.oe_treeview-multiheader-group {
+    text-align: center;
+    font-size: 13px;
+    line-height: 1px;
+}
+th.treeview-header.oe_treeview-multiheader-field {
+    font-size: 13px;
+    line-height: 1px;
+}
+
