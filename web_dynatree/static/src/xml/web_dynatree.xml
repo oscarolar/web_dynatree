@@ -60,7 +60,7 @@
                 <t t-esc="field.attrs.string || fields[field.attrs.name].string" />
             </th>
             <th t-if="field.tag == 'group'"
-                t-att-colspan="field.children.length"
+                t-att-colspan="field.colspan"
                 class="treeview-header oe_treeview-multiheader-group">
                 <t t-esc="field.attrs.string" />
             </th>

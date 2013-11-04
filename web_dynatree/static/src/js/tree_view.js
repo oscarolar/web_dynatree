@@ -144,14 +144,25 @@ openerp.web_dynatree.tree_view = function(instance){
             if (!arch[level]) arch[level] = [];
             _(nodes).each(function(node){
                 if (node.tag == 'group'){
-                    node.colspan= node.children.length;
-                    arch[level].push(node);
                     self.dynatree_get_arch_view(node.children, fields, arch, level + 1);
+                    node.colspan = self.get_colspan(node);
+                    console.log(node)
+                    arch[level].push(node);
                 }else{
                     fields.push(node);
                     arch[level].push(node);
                 }
             });
+        },
+        get_colspan: function(node) {
+            if (node.tag != 'group')
+                return 1;
+            var self = this;
+            var colspan = 0;
+            _(node.children).each(function (n) {
+                colspan += self.get_colspan(n);
+            });
+            return colspan;
         },
         display_dynatree: function () {
             var self = this;
