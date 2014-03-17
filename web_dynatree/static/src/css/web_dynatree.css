@@ -60,3 +60,7 @@ th.treeview-header.oe_treeview-multiheader-field {
     line-height: 1px;
 }
 
+.openerp .oe_view_manager .oe_view_manager_switch .oe_vm_switch_tree_dynatree:after {
+  padding: 2px;
+  content: "j";
+}
