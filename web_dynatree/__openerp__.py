@@ -16,7 +16,7 @@ Add Dynatree Jquerie to add:
     'depends': [
         'web',
     ],
-    'update_xml': [
+    'data': [
         'security/ir.model.access.csv',
         'base.xml',
     ],
