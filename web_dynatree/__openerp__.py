@@ -15,6 +15,7 @@ Add Dynatree Jquerie to add:
     'version': '0.1',
     'depends': [
         'web',
+        'base',
     ],
     'data': [
         'security/ir.model.access.csv',

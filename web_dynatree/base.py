@@ -13,7 +13,6 @@ _logger = getLogger(__name__)
 VIEW_TYPE = ('tree_dynatree', _('Tree with dynatrees'))
 VIEW_TYPES.append(VIEW_TYPE)
 
-
 def valid_node_group(node):
     res = True
     if node.attrib.get('string', None) is None:
@@ -88,11 +87,11 @@ def valid_type_tree_dynatrees(arch, fromgroup=True):
     return res
 
 
-class IrUiView(osv.Model):
+class view(osv.osv):
     _inherit = 'ir.ui.view'
 
     def __init__(self, pool, cr):
-        res = super(IrUiView, self).__init__(pool, cr)
+        res = super(view, self).__init__(pool, cr)
         select = [k for k, v in self._columns['type'].selection]
         if VIEW_TYPE[0] not in select:
             self._columns['type'].selection.append(VIEW_TYPE)
@@ -116,6 +115,19 @@ class IrUiView(osv.Model):
                     return False
 
         return True
+    _columns = {
+            'type': fields.selection([
+                ('tree','Tree'),
+                ('form','Form'),
+                ('graph', 'Graph'),
+                ('calendar', 'Calendar'),
+                ('diagram','Diagram'),
+                ('gantt', 'Gantt'),
+                ('kanban', 'Kanban'),
+                ('search','Search'),
+                ('tree_dynatree','Tree With Dynatrees'),
+                ('qweb', 'QWeb')], string='View Type')
+            }
 
     _constraints = [
         (

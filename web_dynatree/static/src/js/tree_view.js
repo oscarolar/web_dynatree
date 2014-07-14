@@ -9,6 +9,7 @@ openerp.web_dynatree.tree_view = function(instance){
         display_name: _lt('Tree dynatree'),
         view_type: 'tree_dynatree',
         init: function(parent, dataset, view_id, options) {
+            console.log('tree_view');
             this.searchable = options.action.has_search_view;
             this._dynatrees = {};
             this._define_hook = false;
@@ -16,10 +17,12 @@ openerp.web_dynatree.tree_view = function(instance){
             this._super(parent, dataset || null, view_id || null, options || {});
         },
         start: function () {
+            console.log('tree_view start');
             this.display_dynatree();
             return this._super();
         },
         load_tree: function (fields_view){
+            console.log('tree_view load');
             var self = this;
             this.arch_view = [];
             this.columns = [];

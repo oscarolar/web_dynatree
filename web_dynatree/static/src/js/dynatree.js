@@ -1,6 +1,7 @@
 openerp.web_dynatree.dynatree = function (instance) {
     instance.web.Dynatree = instance.web.Widget.extend({
         init: function(obj){
+            console.log('dynatree');
             this.dynatree_id = obj.dynatree_id;
             this._configuration = obj.configuration;
             this._context = obj.context;
