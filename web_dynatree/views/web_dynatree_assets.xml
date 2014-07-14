@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="assets_backend" name="web_dynatree assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/web_dynatree/static/src/css/web_dynatree.css"/>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/boot.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/dynatree.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/m2m_widget.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/m2o_widget.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/tree_view.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>

@@ -1,7 +1,8 @@
 openerp.web_dynatree.tree_view = function(instance){
-
-    var QWeb = instance.web.qweb,
+    console.log('INSTANCIATING THE DYNATRee');
+    var _t = instance.web._t,
         _lt = instance.web._lt;
+    var QWeb = instance.web.qweb;
 
     instance.web.views.add('tree_dynatree', 'instance.web.TreeViewDynatree');
     instance.web.TreeViewDynatree = instance.web.TreeView.extend({

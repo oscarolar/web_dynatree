@@ -16,23 +16,12 @@ Add Dynatree Jquerie to add:
     'depends': [
         'web',
         'base',
+        'base_setup',
     ],
     'data': [
         'security/ir.model.access.csv',
         'base.xml',
-    ],
-    'js': [
-        'static/lib/js/jquery.cookie.js',
-        'static/lib/js/jquery.dynatree.min.js',
-        'static/src/js/boot.js',
-        'static/src/js/dynatree.js',
-        'static/src/js/m2o_widget.js',
-        'static/src/js/m2m_widget.js',
-        'static/src/js/tree_view.js',
-    ],
-    'css': [
-        'static/lib/css/*.css',
-        'static/src/css/*.css',
+        'views/web_dynatree_assets.xml',
     ],
     'qweb': [
         'static/src/xml/web_dynatree.xml',
