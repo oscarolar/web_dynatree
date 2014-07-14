@@ -6,6 +6,9 @@
         <template id="assets_backend" name="web_dynatree assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/web_dynatree/static/src/css/web_dynatree.css"/>
+                <link rel="stylesheet" href="/web_dynatree/static/lib/css/ui.dynatree.css"/>
+                <script type="text/javascript" src="/web_dynatree/static/lib/js/jquery.dynatree-1.2.4.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/lib/js/jquery.dynatree.min.js"></script>
                 <script type="text/javascript" src="/web_dynatree/static/src/js/boot.js"></script>
                 <script type="text/javascript" src="/web_dynatree/static/src/js/dynatree.js"></script>
                 <script type="text/javascript" src="/web_dynatree/static/src/js/m2m_widget.js"></script>

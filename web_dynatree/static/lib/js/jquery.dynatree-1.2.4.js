@@ -12,7 +12,7 @@
 /*************************************************************************
  *	Debug functions
  */
-
+console.log('JQUERY DYNATRWEW loaded');;
 var _canLog = true;
 
 function _log(mode, msg) {

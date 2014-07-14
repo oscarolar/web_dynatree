@@ -40,6 +40,7 @@ openerp.web_dynatree.dynatree = function (instance) {
         },
         load_dynatree: function (children) {
             var self = this;
+            console.log("DYNATREE_ID", this.dynatree_id);
             $("#dynatree_" + this.dynatree_id).dynatree({
                 checkbox: this._use_checkbox,
                 selectMode: this._selectMode,

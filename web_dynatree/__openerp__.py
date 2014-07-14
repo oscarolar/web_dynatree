@@ -23,6 +23,10 @@ Add Dynatree Jquerie to add:
         'base.xml',
         'views/web_dynatree_assets.xml',
     ],
+    'js': [
+     ],
+     'css': [
+     ],
     'qweb': [
         'static/src/xml/web_dynatree.xml',
     ],
