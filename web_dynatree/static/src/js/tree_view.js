@@ -1,5 +1,4 @@
 openerp.web_dynatree.tree_view = function(instance){
-    console.log('INSTANCIATING THE DYNATRee');
     var _t = instance.web._t,
         _lt = instance.web._lt;
     var QWeb = instance.web.qweb;
@@ -30,7 +29,7 @@ openerp.web_dynatree.tree_view = function(instance){
             this.fields = fields_view.fields;
             this.child_field = fields_view['field_parent'];
             this.fields_toread = _.keys(this.fields);
-            this.dynatree_get_arch_view(fields_view.arch.children, this.columns, 
+            this.dynatree_get_arch_view(fields_view.arch.children, this.columns,
                                         this.arch_view, 0);
             if (!this._define_hook) {
                 // Add this test because the add of the do_search methode
@@ -172,12 +171,12 @@ openerp.web_dynatree.tree_view = function(instance){
             var self = this;
             if (this.options.action.dynatree_setting_ids) {
                 dynatreeconf = new instance.web.Model('ir.actions.act_window.dynatree');
-                dynatreeconf.call('get_dynatrees', 
+                dynatreeconf.call('get_dynatrees',
                         [this.options.action.dynatree_setting_ids],
                         {context: this.dataset.context}).then(function (dynatrees) {
                     _(dynatrees).each( function (dynatree) {
                         self._dynatrees[dynatree.id] = [];
-                        var d = QWeb.render('TreeViewDynatree.Dynatree', 
+                        var d = QWeb.render('TreeViewDynatree.Dynatree',
                                             {'dynatree': dynatree});
                         $(self.$el[0]).append(d);
                         new instance.web.Dynatree({
