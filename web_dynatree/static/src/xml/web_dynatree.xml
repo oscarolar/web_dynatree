@@ -11,7 +11,7 @@
             <a t-if="! widget.options.no_open" href="#" tabindex="-1"
                 class="oe_m2o_cm_button oe_e oe_dynatree" draggable="false">/</a>
             <div class="oe_dynatree_wrapper">
-                <div t-att-id="'dynatree_' + widget.id_for_label" 
+                <div t-att-id="'dynatree_' + widget.id_for_label"
                     class="oe_dynatree"/>
             <a href="#" class="oe_form_uri oe_dynatree_without_checkbox"/>
                 <input type="text" style="cursor: default"
@@ -64,7 +64,7 @@
                 class="treeview-header oe_treeview-multiheader-group">
                 <t t-esc="field.attrs.string" />
             </th>
-        </t> 
+        </t>
     </t>
     <t t-name="TreeViewDynatree.headers">
         <tr t-foreach="levels" t-as="level">
@@ -97,4 +97,12 @@
             <t t-set="style" t-value="''"/>
         </td>
     </tr>
+    <t t-name="ListViewDynatree">
+        <treedynatreeheader/>
+        <table class="oe_tree_table oe-treeview-table">
+            <thead/>
+            <p>vaina</p>
+            <tbody/>
+        </table>
+    </t>
 </templates>

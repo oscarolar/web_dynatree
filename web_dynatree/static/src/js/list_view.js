@@ -10,10 +10,6 @@ openerp.web_dynatree.tree_view = function(instance){
         view_type: 'list_dynatree',
         init: function(parent, dataset, view_id, options) {
             console.log('LIST_view');
-            this.searchable = options.action.has_search_view;
-            this._dynatrees = {};
-            this._define_hook = false;
-            this._search_view_domain = dataset.domain;
             this._super(parent, dataset || null, view_id || null, options || {});
         },
     });

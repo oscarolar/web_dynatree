@@ -14,6 +14,7 @@
                 <script type="text/javascript" src="/web_dynatree/static/src/js/m2m_widget.js"></script>
                 <script type="text/javascript" src="/web_dynatree/static/src/js/m2o_widget.js"></script>
                 <script type="text/javascript" src="/web_dynatree/static/src/js/tree_view.js"></script>
+                <script type="text/javascript" src="/web_dynatree/static/src/js/list_view.js"></script>
             </xpath>
         </template>
     </data>
